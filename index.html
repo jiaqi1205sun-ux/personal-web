@@ -1,0 +1,1506 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>我的产品之旅 | 个人博客</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              pink: {
+                50: "#FDF2F8",
+                100: "#FCE7F3",
+                200: "#FBCFE8",
+                300: "#F9A8D4",
+                400: "#F472B6",
+                500: "#EC4899",
+                600: "#DB2777",
+                700: "#BE185D",
+                800: "#9D174D",
+                900: "#831843",
+              },
+            },
+            fontFamily: {
+              pixel: ['"Press Start 2P"', '"ZCOOL KuaiLe"', "cursive"],
+              zhPixel: ['"ZCOOL KuaiLe"', '"Press Start 2P"', "cursive"],
+              sans: ['"Noto Sans SC"', "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Noto Sans SC", sans-serif;
+        background-color: #fdf2f8;
+        color: #831843;
+        scroll-behavior: smooth;
+        image-rendering: pixelated;
+      }
+
+      .font-pixel {
+        font-family: "Press Start 2P", "ZCOOL KuaiLe", cursive;
+      }
+      .font-zh-pixel {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+      }
+
+      .pixel-card {
+        background: white;
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        transition: all 0.2s ease;
+        image-rendering: pixelated;
+      }
+      .pixel-card:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0px 0px #f472b6;
+      }
+
+      .pixel-tag {
+        display: inline-block;
+        background: #fbcfe8;
+        color: #be185d;
+        border: 2px solid #be185d;
+        padding: 4px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        image-rendering: pixelated;
+        box-shadow: 2px 2px 0px 0px #be185d;
+      }
+
+      .pixel-btn {
+        position: relative;
+        display: inline-block;
+        background: #ec4899;
+        color: white;
+        border: none;
+        cursor: pointer;
+        image-rendering: pixelated;
+        transition: transform 0.1s;
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          4px 4px 0px 0px #831843;
+      }
+      .pixel-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          6px 6px 0px 0px #831843;
+      }
+      .pixel-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          2px 2px 0px 0px #831843;
+      }
+
+      .pixel-btn-outline {
+        position: relative;
+        display: inline-block;
+        background: transparent;
+        color: #ec4899;
+        border: 4px solid #ec4899;
+        cursor: pointer;
+        image-rendering: pixelated;
+        transition: transform 0.1s;
+        box-shadow: 4px 4px 0px 0px #ec4899;
+      }
+      .pixel-btn-outline:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        background: rgba(236, 72, 153, 0.1);
+      }
+      .pixel-btn-outline:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px 0px #ec4899;
+      }
+
+      .pixel-nav {
+        background: #fdf2f8;
+        border-bottom: 4px solid #831843;
+        image-rendering: pixelated;
+      }
+
+      .pixel-menu {
+        background: #fdf2f8;
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+      }
+
+      .pixel-box {
+        background: white;
+        border: 3px solid #831843;
+        box-shadow: 4px 4px 0px 0px #ec4899;
+        padding: 16px;
+      }
+
+      .pixel-divider {
+        height: 8px;
+        background: repeating-linear-gradient(
+          90deg,
+          #ec4899 0px,
+          #ec4899 8px,
+          transparent 8px,
+          transparent 16px
+        );
+      }
+
+      .img-placeholder {
+        background: repeating-linear-gradient(
+          45deg,
+          #fbcfe8,
+          #fbcfe8 10px,
+          #f9a8d4 10px,
+          #f9a8d4 20px
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #be185d;
+        font-size: 0.875rem;
+        border: 3px solid #831843;
+        image-rendering: pixelated;
+      }
+
+      .typing-cursor {
+        display: inline-block;
+        animation: blink 0.75s step-end infinite;
+        color: #ec4899;
+        font-weight: bold;
+        margin-left: 2px;
+      }
+      @keyframes blink {
+        from,
+        to {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .timeline-line {
+        position: absolute;
+        left: 24px;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: repeating-linear-gradient(
+          to bottom,
+          #ec4899 0px,
+          #ec4899 8px,
+          transparent 8px,
+          transparent 16px
+        );
+      }
+      .timeline-dot {
+        width: 16px;
+        height: 16px;
+        background: #f472b6;
+        border: 4px solid #831843;
+        position: absolute;
+        left: 18px;
+        top: 28px;
+        box-shadow: 3px 3px 0px 0px #ec4899;
+        image-rendering: pixelated;
+      }
+
+      .pixel-bg {
+        background-image:
+          radial-gradient(circle, #f9a8d4 2px, transparent 2px),
+          radial-gradient(circle, #fbcfe8 2px, transparent 2px);
+        background-size: 32px 32px;
+        background-position:
+          0 0,
+          16px 16px;
+      }
+
+      .float-animation {
+        animation: float 3s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .bounce-in {
+        animation: bounceIn 1s ease-out;
+      }
+      @keyframes bounceIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.3);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+        }
+        70% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .pulse-btn {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow:
+            inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+            4px 4px 0px 0px #831843;
+        }
+        50% {
+          box-shadow:
+            inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+            4px 4px 0px 0px #831843,
+            0 0 0 8px rgba(236, 72, 153, 0.3);
+        }
+      }
+
+      .slide-in-left {
+        animation: slideInLeft 1s ease-out;
+      }
+      @keyframes slideInLeft {
+        from {
+          opacity: 0;
+          transform: translateX(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .slide-in-right {
+        animation: slideInRight 1s ease-out;
+      }
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+      .pixel-star {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #ec4899;
+        animation: twinkle 2s infinite;
+        image-rendering: pixelated;
+      }
+      .pixel-star::before,
+      .pixel-star::after {
+        content: "";
+        position: absolute;
+        background: #ec4899;
+      }
+      .pixel-star::before {
+        width: 2px;
+        height: 8px;
+        left: 3px;
+        top: 0;
+      }
+      .pixel-star::after {
+        width: 8px;
+        height: 2px;
+        left: 0;
+        top: 3px;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #fdf2f8;
+        border-left: 3px solid #831843;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ec4899;
+        border: 3px solid #831843;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #f472b6;
+      }
+
+      .project-item {
+        position: relative;
+        transition: all 0.3s ease;
+      }
+      .project-item:hover .project-img-wrap {
+        transform: translate(-4px, -4px);
+        box-shadow: 10px 10px 0px 0px #f472b6;
+      }
+      .project-img-wrap {
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        transition: all 0.3s ease;
+        overflow: hidden;
+        background: repeating-linear-gradient(
+          45deg,
+          #fbcfe8,
+          #fbcfe8 10px,
+          #f9a8d4 10px,
+          #f9a8d4 20px
+        );
+      }
+      .project-num {
+        font-family: "Press Start 2P", cursive;
+        font-size: 3rem;
+        color: #fbcfe8;
+        line-height: 1;
+        text-shadow: 3px 3px 0px #ec4899;
+      }
+      .project-connector {
+        position: absolute;
+        left: 50%;
+        bottom: -40px;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 40px;
+        background: repeating-linear-gradient(
+          to bottom,
+          #ec4899 0px,
+          #ec4899 6px,
+          transparent 6px,
+          transparent 12px
+        );
+        z-index: 0;
+      }
+
+      .article-row {
+        position: relative;
+        border-bottom: 2px dashed #ec4899;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .article-row:last-child {
+        border-bottom: none;
+      }
+      .article-row:hover {
+        background: rgba(251, 207, 232, 0.4);
+      }
+      .article-row:hover .article-num {
+        color: #f472b6;
+        text-shadow: 3px 3px 0px #831843;
+      }
+      .article-row:hover .article-arrow {
+        transform: translateX(6px);
+        color: #f472b6;
+      }
+      .article-row:hover .article-summary {
+        max-height: 200px;
+        opacity: 1;
+        margin-top: 12px;
+      }
+      .article-num {
+        font-family: "Press Start 2P", cursive;
+        font-size: 2.5rem;
+        color: #f9a8d4;
+        line-height: 1;
+        text-shadow: 2px 2px 0px #ec4899;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+      .article-arrow {
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+      .article-summary {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.4s ease;
+      }
+      .article-meta-dot {
+        width: 6px;
+        height: 6px;
+        background: #ec4899;
+        display: inline-block;
+        margin: 0 8px;
+        vertical-align: middle;
+        box-shadow: 1px 1px 0px #831843;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 z-50 pixel-nav">
+      <div
+        class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between"
+      >
+        <a
+          href="#"
+          class="font-zh-pixel text-lg md:text-xl font-bold text-pink-900 tracking-wide flex items-center gap-2"
+        >
+          <span
+            class="inline-block w-6 h-6 bg-pink-500 border-2 border-pink-900"
+          ></span>
+          我的产品之旅
+        </a>
+        <div
+          class="hidden md:flex items-center gap-1 text-sm font-bold text-pink-700"
+        >
+          <a
+            href="#projects"
+            class="px-4 py-2 hover:bg-pink-200 transition-colors border-2 border-transparent hover:border-pink-900"
+            >项目经历</a
+          >
+          <a
+            href="#awards"
+            class="px-4 py-2 hover:bg-pink-200 transition-colors border-2 border-transparent hover:border-pink-900"
+            >奖项经历</a
+          >
+          <a
+            href="articles.html"
+            class="px-4 py-2 hover:bg-pink-200 transition-colors border-2 border-transparent hover:border-pink-900"
+          >
+            全部文章
+          </a>
+          <a
+            href="#about"
+            class="px-4 py-2 hover:bg-pink-200 transition-colors border-2 border-transparent hover:border-pink-900"
+            >关于我</a
+          >
+        </div>
+        <button
+          onclick="toggleMobileMenu()"
+          class="md:hidden text-pink-900 border-2 border-pink-900 p-1 hover:bg-pink-200"
+        >
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <div id="mobileMenu" class="hidden md:hidden mx-6 mb-4">
+        <div class="pixel-menu p-4 space-y-2">
+          <a
+            href="#projects"
+            class="block px-4 py-2 text-pink-900 font-bold hover:bg-pink-200 border-2 border-transparent hover:border-pink-900"
+            >项目经历</a
+          >
+          <a
+            href="#awards"
+            class="block px-4 py-2 text-pink-900 font-bold hover:bg-pink-200 border-2 border-transparent hover:border-pink-900"
+            >奖项经历</a
+          >
+          <a
+            href="articles.html"
+            class="block px-4 py-2 text-pink-900 font-bold hover:bg-pink-200 border-2 border-transparent hover:border-pink-900"
+          >
+            全部文章
+          </a>
+          <a
+            href="#about"
+            class="block px-4 py-2 text-pink-900 font-bold hover:bg-pink-200 border-2 border-transparent hover:border-pink-900"
+            >关于我</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <section
+      class="relative min-h-screen flex items-center justify-center pt-24 pb-20 overflow-hidden pixel-bg"
+    >
+      <div
+        class="pixel-star"
+        style="top: 15%; left: 10%; animation-delay: 0s"
+      ></div>
+      <div
+        class="pixel-star"
+        style="top: 25%; right: 15%; animation-delay: 0.5s"
+      ></div>
+      <div
+        class="pixel-star"
+        style="top: 60%; left: 8%; animation-delay: 1s"
+      ></div>
+      <div
+        class="pixel-star"
+        style="top: 70%; right: 10%; animation-delay: 1.5s"
+      ></div>
+      <div
+        class="pixel-star"
+        style="top: 40%; left: 20%; animation-delay: 0.3s"
+      ></div>
+
+      <div class="max-w-5xl mx-auto px-6 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <!-- 左侧：照片 -->
+          <div class="flex justify-center lg:justify-end slide-in-left">
+            <div class="relative float-animation">
+              <div
+                class="absolute -top-4 -left-4 w-full h-full bg-pink-300 border-4 border-pink-800"
+              ></div>
+              <div
+                class="relative bg-white border-4 border-pink-800 p-2"
+                style="box-shadow: 8px 8px 0px 0px #ec4899"
+              >
+                <img
+                  src="me.png"
+                  alt="个人照片"
+                  class="w-64 md:w-80 h-auto object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧：文字内容 -->
+          <div class="text-center lg:text-left slide-in-right">
+            <h1
+              class="font-zh-pixel text-3xl md:text-5xl font-bold text-pink-900 mb-4 leading-relaxed bounce-in"
+            >
+              欢迎光临！
+            </h1>
+            <h2
+              class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-800 mb-8 leading-relaxed"
+            >
+              你好呀，我是<span class="text-pink-500" id="static-text"></span
+              ><span class="typing-cursor" id="cursor">|</span>
+            </h2>
+
+            <div class="mb-6">
+              <p class="text-base md:text-lg text-pink-800 font-bold">
+                一个喜欢用技术思维做产品、用 Vibe Coding
+                提效率的计算机系学生。平时爱琢磨怎么把想法变成好用的东西，也爱研究用
+                AI 和工具，让事情做得更轻松高效✨
+              </p>
+            </div>
+
+            <p
+              class="text-pink-800 max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed text-base md:text-lg"
+            >
+              这里是我的个人小站，记录我的项目实践、校园成长、零散思考和日常碎片，欢迎来逛逛～
+            </p>
+
+            <div
+              class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            >
+              <a
+                href="#projects"
+                class="pixel-btn px-8 py-3 font-bold text-sm pulse-btn"
+                >查看我的项目</a
+              >
+              <a
+                href="#about"
+                class="pixel-btn-outline px-8 py-3 font-bold text-sm"
+                >了解更多</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="absolute bottom-0 left-0 w-full h-8 bg-repeat-x"
+        style="
+          background-image:
+            linear-gradient(135deg, #fdf2f8 25%, transparent 25%),
+            linear-gradient(225deg, #fdf2f8 25%, transparent 25%);
+          background-size: 32px 32px;
+          background-position: 0 0;
+        "
+      ></div>
+    </section>
+
+    <!-- Bento Grid 快速导航 -->
+    <section class="py-20 bg-pink-50">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="text-center mb-12 fade-in">
+          <h2
+            class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-900 mb-3"
+          >
+            快速导航
+          </h2>
+          <div class="pixel-divider max-w-xs mx-auto mt-4"></div>
+          <p class="text-pink-700 mt-3">探索我的产品世界</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <a
+            href="#projects"
+            class="pixel-card p-6 fade-in"
+            style="transition-delay: 0.1s"
+          >
+            <div
+              class="w-12 h-12 bg-pink-200 border-2 border-pink-900 flex items-center justify-center mb-4"
+              style="box-shadow: 3px 3px 0px 0px #ec4899"
+            >
+              <i data-lucide="briefcase" class="w-6 h-6 text-pink-800"></i>
+            </div>
+            <h3 class="font-zh-pixel text-base font-bold text-pink-900 mb-2">
+              项目经历
+            </h3>
+            <p class="text-sm text-pink-700">2个实战项目从0到1</p>
+          </a>
+
+          <a
+            href="#awards"
+            class="pixel-card p-6 fade-in"
+            style="transition-delay: 0.2s"
+          >
+            <div
+              class="w-12 h-12 bg-pink-200 border-2 border-pink-900 flex items-center justify-center mb-4"
+              style="box-shadow: 3px 3px 0px 0px #ec4899"
+            >
+              <i data-lucide="trophy" class="w-6 h-6 text-pink-800"></i>
+            </div>
+            <h3 class="font-zh-pixel text-base font-bold text-pink-900 mb-2">
+              奖项荣誉
+            </h3>
+            <p class="text-sm text-pink-700">2项荣誉 + 2段校园经历</p>
+          </a>
+
+          <a
+            href="#articles"
+            class="pixel-card p-6 fade-in"
+            style="transition-delay: 0.3s"
+          >
+            <div
+              class="w-12 h-12 bg-pink-200 border-2 border-pink-900 flex items-center justify-center mb-4"
+              style="box-shadow: 3px 3px 0px 0px #ec4899"
+            >
+              <i data-lucide="file-text" class="w-6 h-6 text-pink-800"></i>
+            </div>
+            <h3 class="font-zh-pixel text-base font-bold text-pink-900 mb-2">
+              文章博客
+            </h3>
+            <p class="text-sm text-pink-700">产品复盘与学习笔记</p>
+          </a>
+
+          <a
+            href="#about"
+            class="pixel-card p-6 fade-in"
+            style="transition-delay: 0.4s"
+          >
+            <div
+              class="w-12 h-12 bg-pink-200 border-2 border-pink-900 flex items-center justify-center mb-4"
+              style="box-shadow: 3px 3px 0px 0px #ec4899"
+            >
+              <i data-lucide="user" class="w-6 h-6 text-pink-800"></i>
+            </div>
+            <h3 class="font-zh-pixel text-base font-bold text-pink-900 mb-2">
+              关于我
+            </h3>
+            <p class="text-sm text-pink-700">技术背景的产品新人</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 项目经历 -->
+    <section id="projects" class="py-24 bg-pink-50">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="mb-16 fade-in">
+          <span
+            class="text-pink-500 text-xs font-bold tracking-widest uppercase font-pixel"
+            >Projects</span
+          >
+          <h2
+            class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-900 mt-2"
+          >
+            项目经历
+          </h2>
+          <div class="pixel-divider w-24 mt-3"></div>
+          <p class="text-pink-700 mt-4 max-w-xl">
+            从需求洞察到数据验证，每个项目都是一次完整的产品闭环实践。
+          </p>
+        </div>
+
+        <div class="space-y-20">
+          <!-- 项目 1 -->
+          <div class="project-item fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div class="lg:col-span-5 relative">
+                <div class="project-num absolute -top-6 -left-2 z-10">01</div>
+                <div class="project-img-wrap aspect-[4/3] relative ml-4 mt-4">
+                  <img
+                    src="student.png"
+                    alt="学业导师助手登录页"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+
+              <div class="lg:col-span-7">
+                <div class="flex gap-2 mb-4">
+                  <span class="pixel-tag">#B端产品</span>
+                  <span class="pixel-tag">#SaaS</span>
+                  <span class="pixel-tag">#权限管理</span>
+                </div>
+
+                <h3
+                  class="font-zh-pixel text-xl md:text-2xl font-bold text-pink-900 mb-4"
+                >
+                  学业导师助手数字化考核评价系统
+                </h3>
+
+                <p class="text-pink-800 leading-relaxed mb-6 text-base">
+                  作为<strong class="text-pink-900"
+                    >项目主负责人 / 产品经理</strong
+                  >，针对学业导师考核流程繁琐、信息收集低效的痛点，调研8名管理人员与25名学生，梳理"学生填报-导师审核-管理员打分"核心流程，设计四端权限体系，用数据驱动优化评分效率。
+                </p>
+
+                <div class="space-y-3 mb-6">
+                  <div class="flex items-start gap-3">
+                    <span
+                      class="inline-block w-2 h-2 bg-pink-500 mt-2 flex-shrink-0"
+                      style="box-shadow: 2px 2px 0px #831843"
+                    ></span>
+                    <span class="text-sm text-pink-700"
+                      >绘制Figma原型、撰写需求文档，为开发团队提供清晰落地依据</span
+                    >
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span
+                      class="inline-block w-2 h-2 bg-pink-500 mt-2 flex-shrink-0"
+                      style="box-shadow: 2px 2px 0px #831843"
+                    ></span>
+                    <span class="text-sm text-pink-700"
+                      >运用SQL+Flask+ECharts分析5000+条用户行为数据，优化分数核算逻辑</span
+                    >
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span
+                      class="inline-block w-2 h-2 bg-pink-500 mt-2 flex-shrink-0"
+                      style="box-shadow: 2px 2px 0px #831843"
+                    ></span>
+                    <span class="text-sm text-pink-700"
+                      >建立进度节点管控机制，保障项目按期交付率<strong
+                        class="text-pink-900"
+                        >100%</strong
+                      >，评分汇总耗时降低<strong class="text-pink-900"
+                        >60%</strong
+                      ></span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="flex items-center justify-between pt-4 border-t-2 border-dashed border-pink-300"
+                >
+                  <span
+                    class="text-xs text-pink-700 font-bold border-2 border-pink-700 px-3 py-1"
+                    >2025.07 — 至今</span
+                  >
+                  <a
+                    href="https://academic.sipc115.com"
+                    target="_blank"
+                    class="text-pink-900 text-sm font-bold hover:text-pink-600 transition-colors flex items-center gap-1 border-b-2 border-pink-900 hover:border-pink-600 pb-1"
+                  >
+                    点击查看
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="project-connector hidden lg:block"></div>
+          </div>
+
+          <!-- 项目 2 -->
+          <div class="project-item fade-in" style="transition-delay: 0.15s">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div class="lg:col-span-7 order-2 lg:order-1">
+                <div class="flex gap-2 mb-4">
+                  <span class="pixel-tag">#内容平台</span>
+                  <span class="pixel-tag">#MVP</span>
+                  <span class="pixel-tag">#数据驱动</span>
+                </div>
+
+                <h3
+                  class="font-zh-pixel text-xl md:text-2xl font-bold text-pink-900 mb-4"
+                >
+                  "Nova"技术学习与内容管理平台
+                </h3>
+
+                <p class="text-pink-800 leading-relaxed mb-6 text-base">
+                  作为<strong class="text-pink-900"
+                    >产品经理 / 核心负责人</strong
+                  >，针对博客内容滞后、与培养方向脱节及缺乏实战训练平台的痛点，调研200+师生需求，拆解产品模块，上线MVP版本并持续用数据迭代优化。
+                </p>
+
+                <div class="space-y-3 mb-6">
+                  <div class="flex items-start gap-3">
+                    <span
+                      class="inline-block w-2 h-2 bg-pink-500 mt-2 flex-shrink-0"
+                      style="box-shadow: 2px 2px 0px #831843"
+                    ></span>
+                    <span class="text-sm text-pink-700"
+                      >设计内容生产与发布全流程管控功能，保障内容适配性与时效性</span
+                    >
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span
+                      class="inline-block w-2 h-2 bg-pink-500 mt-2 flex-shrink-0"
+                      style="box-shadow: 2px 2px 0px #831843"
+                    ></span>
+                    <span class="text-sm text-pink-700"
+                      >搭建数据看板，分析6000+条运营数据，推动核心功能使用率从<strong
+                        class="text-pink-900"
+                        >75%提升至82%</strong
+                      ></span
+                    >
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <span
+                      class="inline-block w-2 h-2 bg-pink-500 mt-2 flex-shrink-0"
+                      style="box-shadow: 2px 2px 0px #831843"
+                    ></span>
+                    <span class="text-sm text-pink-700"
+                      >规划Playground实战训练模块，MVP版本累计访问<strong
+                        class="text-pink-900"
+                        >800+人次</strong
+                      ></span
+                    >
+                  </div>
+                </div>
+
+                <div
+                  class="flex items-center justify-between pt-4 border-t-2 border-dashed border-pink-300"
+                >
+                  <span
+                    class="text-xs text-pink-700 font-bold border-2 border-pink-700 px-3 py-1"
+                    >2025.12 — 至今</span
+                  >
+                  <a
+                    href="https://test-learn.novaflow.top/"
+                    target="_blank"
+                    class="text-pink-900 text-sm font-bold hover:text-pink-600 transition-colors flex items-center gap-1 border-b-2 border-pink-900 hover:border-pink-600 pb-1"
+                  >
+                    点击查看
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                  </a>
+                </div>
+              </div>
+
+              <div class="lg:col-span-5 relative order-1 lg:order-2">
+                <div class="project-num absolute -top-6 -right-2 z-10">02</div>
+                <div class="project-img-wrap aspect-[4/3] relative mr-4 mt-4">
+                  <img
+                    src="nova.png"
+                    alt="Nova技术学习平台"
+                    class="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 荣誉奖项与校园经历 -->
+    <section id="awards" class="py-24 bg-white">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="mb-12 fade-in">
+          <span
+            class="text-pink-500 text-xs font-bold tracking-widest uppercase font-pixel"
+            >Awards</span
+          >
+          <h2
+            class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-900 mt-2"
+          >
+            荣誉奖项
+          </h2>
+          <div class="pixel-divider w-24 mt-3"></div>
+        </div>
+
+        <div class="relative pl-4 md:pl-0 mb-16">
+          <div class="timeline-line hidden md:block"></div>
+
+          <div class="relative md:pl-12 pb-12 fade-in">
+            <div class="timeline-dot hidden md:block"></div>
+            <div class="pixel-card md:ml-4 p-6">
+              <div class="flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-40 h-32 flex-shrink-0">
+                  <img
+                    src="competition.jpg"
+                    alt="华北五省计算机应用大赛"
+                    class="w-full h-full object-cover border-4 border-pink-900"
+                  />
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <span
+                      class="text-pink-700 text-xs font-bold border-2 border-pink-700 px-2 py-1"
+                      >2025.10</span
+                    >
+                    <span class="pixel-tag">国家级竞赛</span>
+                  </div>
+                  <h3
+                    class="font-zh-pixel text-base font-bold text-pink-900 mb-2"
+                  >
+                    华北五省计算机应用大赛 国赛一等奖
+                  </h3>
+                  <p class="text-pink-800 text-sm leading-relaxed">
+                    参加华北五省、市、自治区及港澳台大学生计算机应用大赛，凭借"学业导师助手数字化考核评价系统"项目，从数百支队伍中脱颖而出，获得<strong
+                      class="text-pink-900"
+                      >国家级一等奖</strong
+                    >。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative md:pl-12 fade-in" style="transition-delay: 0.1s">
+            <div class="timeline-dot hidden md:block" style="top: 28px"></div>
+            <div class="pixel-card md:ml-4 p-6">
+              <div class="flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-40 h-32 flex-shrink-0">
+                  <img
+                    src="scholarship.png"
+                    alt="天津市人民政府奖学金"
+                    class="w-full h-full object-cover border-4 border-pink-900"
+                  />
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <span
+                      class="text-pink-700 text-xs font-bold border-2 border-pink-700 px-2 py-1"
+                      >2025.11</span
+                    >
+                    <span class="pixel-tag">校级荣誉</span>
+                  </div>
+                  <h3
+                    class="font-zh-pixel text-base font-bold text-pink-900 mb-2"
+                  >
+                    天津市人民政府奖学金
+                  </h3>
+                  <p class="text-pink-800 text-sm leading-relaxed">
+                    综合学业成绩、科创竞赛与学生工作表现优异，获得<strong
+                      class="text-pink-900"
+                      >天津市人民政府奖学金</strong
+                    >。已通过大学英语四级、六级考试，具备英文文档阅读与基础口语交流能力。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-12 fade-in" style="transition-delay: 0.15s">
+          <span
+            class="text-pink-500 text-xs font-bold tracking-widest uppercase font-pixel"
+            >Campus Experience</span
+          >
+          <h2
+            class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-900 mt-2"
+          >
+            校园经历
+          </h2>
+          <div class="pixel-divider w-24 mt-3"></div>
+        </div>
+
+        <div class="relative pl-4 md:pl-0">
+          <div class="timeline-line hidden md:block"></div>
+
+          <div
+            class="relative md:pl-12 pb-12 fade-in"
+            style="transition-delay: 0.2s"
+          >
+            <div class="timeline-dot hidden md:block"></div>
+            <div class="pixel-card md:ml-4 p-6">
+              <div class="flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-40 h-32 flex-shrink-0">
+                  <img
+                    src="sipc.jpg"
+                    alt="学生创新创业实践中心"
+                    class="w-full h-full object-cover border-4 border-pink-900"
+                  />
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <span
+                      class="text-pink-700 text-xs font-bold border-2 border-pink-700 px-2 py-1"
+                      >2025.07</span
+                    >
+                    <span class="pixel-tag">社团经历</span>
+                  </div>
+                  <h3
+                    class="font-zh-pixel text-base font-bold text-pink-900 mb-2"
+                  >
+                    学生创新创业实践中心 · 产品组负责人
+                  </h3>
+                  <p class="text-pink-800 text-sm leading-relaxed">
+                    主导产品全流程管控，搭建标准化产品管理机制，统筹从需求调研、原型设计到测试上线、迭代优化的全链路；梳理跨岗位协作流程，优化协作模式；策划公益学术培训活动，搭建第二课堂学习体系，<strong
+                      class="text-pink-900"
+                      >覆盖全校学生</strong
+                    >。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="relative md:pl-12 fade-in" style="transition-delay: 0.3s">
+            <div class="timeline-dot hidden md:block" style="top: 28px"></div>
+            <div class="pixel-card md:ml-4 p-6">
+              <div class="flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-40 h-32 flex-shrink-0">
+                  <img
+                    src="class.png"
+                    alt="班级组生委员"
+                    class="w-full h-full object-cover border-4 border-pink-900"
+                  />
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <span
+                      class="text-pink-700 text-xs font-bold border-2 border-pink-700 px-2 py-1"
+                      >2024.09</span
+                    >
+                    <span class="pixel-tag">学生工作</span>
+                  </div>
+                  <h3
+                    class="font-zh-pixel text-base font-bold text-pink-900 mb-2"
+                  >
+                    班级组生委员
+                  </h3>
+                  <p class="text-pink-800 text-sm leading-relaxed">
+                    统筹班级卫生管理与日常事务，建立规范管理机制，保障班级有序运转；策划组织班级团建活动，对接学院通知、协调同学需求，有效提升班级凝聚力，锻炼了沟通协调、活动策划与落地执行能力。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 文章 -->
+    <section id="articles" class="py-24 bg-pink-100">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="mb-12 fade-in">
+          <span
+            class="text-pink-500 text-xs font-bold tracking-widest uppercase font-pixel"
+            >Blog</span
+          >
+          <h2
+            class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-900 mt-2"
+          >
+            文章
+          </h2>
+          <div class="pixel-divider w-24 mt-3"></div>
+          <p class="text-pink-700 mt-4">
+            记录思考，沉淀认知，分享成长路上的点滴。
+          </p>
+        </div>
+
+        <div
+          class="bg-white border-4 border-pink-900"
+          style="box-shadow: 8px 8px 0px 0px #ec4899"
+        >
+          <a
+            href="detail.html?id=1"
+            class="article-row px-6 py-8 md:px-10 md:py-10 fade-in block hover:no-underline"
+          >
+            <div class="flex items-start gap-6 md:gap-10">
+              <div class="article-num pt-1">01</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <span class="pixel-tag text-xs">Vibe Coding</span>
+                  <span class="text-pink-700 text-xs font-bold"
+                    >2026.04.20</span
+                  >
+                  <span class="article-meta-dot"></span>
+                  <span class="text-pink-700 text-xs font-bold"
+                    >5 min read</span
+                  >
+                </div>
+                <h3
+                  class="font-zh-pixel text-lg md:text-xl font-bold text-pink-900 mb-2 leading-snug"
+                >
+                  我是如何用 Claude Code 搭建这个博客的
+                </h3>
+                <div class="article-summary">
+                  <p class="text-pink-700 text-sm leading-relaxed">
+                    从零开始，用自然语言与 AI
+                    协作，在几个小时内完成了这个像素风格的个人网站。分享我的
+                    Prompt 思路、设计决策过程和迭代心得。
+                  </p>
+                </div>
+              </div>
+              <div
+                class="article-arrow text-pink-500 text-2xl hidden md:block pt-2"
+              >
+                <i data-lucide="arrow-right" class="w-6 h-6"></i>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="detail.html?id=2"
+            class="article-row px-6 py-8 md:px-10 md:py-10 fade-in block hover:no-underline"
+            style="transition-delay: 0.1s"
+          >
+            <div class="flex items-start gap-6 md:gap-10">
+              <div class="article-num pt-1">02</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <span class="pixel-tag text-xs">产品复盘</span>
+                  <span class="text-pink-700 text-xs font-bold">2025.12</span>
+                  <span class="article-meta-dot"></span>
+                  <span class="text-pink-700 text-xs font-bold"
+                    >10 min read</span
+                  >
+                </div>
+                <h3
+                  class="font-zh-pixel text-lg md:text-xl font-bold text-pink-900 mb-2 leading-snug"
+                >
+                  从0到1：学业导师考核系统的产品实践复盘
+                </h3>
+                <div class="article-summary">
+                  <p class="text-pink-700 text-sm leading-relaxed">
+                    作为项目主负责人，我是如何调研33名师生、梳理四端权限体系、用SQL+ECharts分析5000+条数据并优化评分流程的？一次完整的B端产品实战记录。
+                  </p>
+                </div>
+              </div>
+              <div
+                class="article-arrow text-pink-500 text-2xl hidden md:block pt-2"
+              >
+                <i data-lucide="arrow-right" class="w-6 h-6"></i>
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="detail.html?id=3"
+            class="article-row px-6 py-8 md:px-10 md:py-10 fade-in block hover:no-underline"
+            style="transition-delay: 0.2s"
+          >
+            <div class="flex items-start gap-6 md:gap-10">
+              <div class="article-num pt-1">03</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <span class="pixel-tag text-xs">MVP实践</span>
+                  <span class="text-pink-700 text-xs font-bold">2025.08</span>
+                  <span class="article-meta-dot"></span>
+                  <span class="text-pink-700 text-xs font-bold"
+                    >8 min read</span
+                  >
+                </div>
+                <h3
+                  class="font-zh-pixel text-lg md:text-xl font-bold text-pink-900 mb-2 leading-snug"
+                >
+                  200+用户调研后，Nova平台MVP的拆解思路
+                </h3>
+                <div class="article-summary">
+                  <p class="text-pink-700 text-sm leading-relaxed">
+                    面对博客内容滞后和缺乏实战平台的痛点，如何通过200+份调研拆解产品模块，设计内容生产全流程，并在数据驱动下将核心功能使用率从75%提升至82%？
+                  </p>
+                </div>
+              </div>
+              <div
+                class="article-arrow text-pink-500 text-2xl hidden md:block pt-2"
+              >
+                <i data-lucide="arrow-right" class="w-6 h-6"></i>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="mt-8 text-center fade-in" style="transition-delay: 0.3s">
+          <a
+            href="articles.html"
+            class="pixel-btn px-8 py-3 font-bold text-sm inline-flex items-center gap-2"
+          >
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            查看更多文章
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section id="about" class="py-24 bg-white">
+      <div class="max-w-5xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-12 items-center">
+          <div class="md:col-span-2 fade-in flex justify-center">
+            <div class="relative">
+              <div
+                class="absolute -top-3 -left-3 w-full h-full bg-pink-300 border-2 border-pink-900"
+              ></div>
+              <div class="relative z-10 bg-white border-2 border-pink-900 p-2">
+                <img
+                  src="person.jpg"
+                  alt="个人生活照"
+                  class="w-64 h-auto object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="md:col-span-3 fade-in" style="transition-delay: 0.15s">
+            <span
+              class="text-pink-500 text-xs font-bold tracking-widest uppercase font-pixel"
+              >About Me</span
+            >
+            <h2
+              class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-900 mt-2 mb-6"
+            >
+              关于我
+            </h2>
+            <div class="pixel-divider w-24 mb-6"></div>
+
+            <div class="space-y-4 text-pink-800 leading-relaxed mb-8">
+              <p>
+                ISFP
+                小画家～天生心思细腻，擅长捕捉细微感知，格外在意视觉质感、使用体验，还有生活里满满的小氛围感。
+              </p>
+              <p>
+                就读计算机专业，擅长梳理需求、拆解问题；熟练用 Figma
+                打磨原型设计，也会用 SQL 完成基础数据整理。
+              </p>
+              <p>
+                平时很喜欢挖掘 AI 协作与 Vibe Coding
+                的趣味玩法，主动探索轻便高效的工作方式，为项目实践解锁更多新鲜思路。
+              </p>
+              <p>
+                享受团队协作的氛围，擅长沟通衔接、整合碎片化信息，能将零散的想法梳理成清晰可行的方案，踏实稳妥推进每件事落地。
+              </p>
+              <p>认真对待学习与实践，也格外热爱松弛的日常✨</p>
+              <p>空闲之余，热衷于发掘烟火美食、随心追星，或是安心睡懒觉</p>
+              <p>认真做事，快乐生活，期待邂逅更多同频有趣的小伙伴。</p>
+            </div>
+
+            <div class="mb-8">
+              <h3 class="font-zh-pixel text-base font-bold text-pink-900 mb-3">
+                技能标签
+              </h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="pixel-tag">需求分析</span>
+                <span class="pixel-tag">用户调研</span>
+                <span class="pixel-tag">SQL</span>
+                <span class="pixel-tag">数据分析</span>
+                <span class="pixel-tag">Figma</span>
+                <span class="pixel-tag">墨刀</span>
+                <span class="pixel-tag">Vibe Coding</span>
+                <span class="pixel-tag">Claude Code</span>
+                <span class="pixel-tag">跨团队沟通</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-zh-pixel text-base font-bold text-pink-900 mb-3">
+                联系我
+              </h3>
+              <div class="flex flex-wrap gap-4">
+                <a
+                  href="mailto:18622703206@163.com"
+                  class="flex items-center gap-2 text-pink-800 hover:text-pink-600 transition-colors font-bold"
+                >
+                  <i data-lucide="mail" class="w-5 h-5"></i>
+                  <span
+                    class="text-sm border-b-2 border-pink-800 hover:border-pink-600"
+                    >18622703206@163.com</span
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vibe Coding 彩蛋区 -->
+    <section class="py-16 bg-pink-100">
+      <div class="max-w-3xl mx-auto px-6 text-center fade-in">
+        <div
+          class="inline-block px-4 py-2 bg-white text-pink-900 text-sm font-bold mb-4 border-2 border-pink-900"
+          style="box-shadow: 4px 4px 0px 0px #ec4899"
+        >
+          Made with Vibe Coding
+        </div>
+        <h3
+          class="font-zh-pixel text-xl md:text-2xl font-bold text-pink-900 mb-3"
+        >
+          这个网站是如何诞生的
+        </h3>
+        <div class="pixel-divider max-w-xs mx-auto mb-4"></div>
+        <p class="text-pink-800 leading-relaxed mb-6">
+          我没有写一行传统意义上的"代码"。从设计到实现，全程通过自然语言与
+          Claude Code 对话完成。 这本身就是我对"AI 时代产品经理"能力边界的探索。
+        </p>
+        <div class="pixel-box max-w-xl mx-auto text-left bg-white">
+          <p class="text-xs text-pink-600 mb-2 font-bold font-pixel">
+            Prompt 片段：
+          </p>
+          <p class="text-sm text-pink-900 leading-relaxed">
+            "帮我设计一个<strong>像素风格</strong>的个人博客，保留温暖人文配色，用
+            Tailwind CSS，包含项目、奖项、文章、关于我四个板块，要有像素边框和
+            8-bit 装饰……"
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-8 bg-pink-900 text-pink-300 border-t-4 border-pink-500">
+      <div
+        class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4"
+      >
+        <p class="text-sm font-bold">
+          2026 我的产品之旅 · 用 Lucide 图标和 Claude Code 构建
+        </p>
+        <div class="flex gap-6 text-sm font-bold">
+          <a
+            href="#projects"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+            >项目</a
+          >
+          <a
+            href="#awards"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+            >奖项</a
+          >
+          <a
+            href="#articles"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+            >文章</a
+          >
+          <a
+            href="#about"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+            >关于</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function toggleMobileMenu() {
+        const menu = document.getElementById("mobileMenu");
+        menu.classList.toggle("hidden");
+      }
+
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".fade-in").forEach((el) => {
+        observer.observe(el);
+      });
+
+      let lastScroll = 0;
+      window.addEventListener("scroll", () => {
+        const nav = document.querySelector("nav");
+        const currentScroll = window.pageYOffset;
+        if (currentScroll > 100) {
+          nav.style.boxShadow = "0 4px 0px 0px #3D2914";
+        } else {
+          nav.style.boxShadow = "none";
+        }
+        lastScroll = currentScroll;
+      });
+
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            document.getElementById("mobileMenu").classList.add("hidden");
+          }
+        });
+      });
+
+      // 打字机效果
+      const texts = ["产品爱好者", "ISFP小画家", "kpop追星人", "计算机系学生"];
+      let textIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+      const staticTextElement = document.getElementById("static-text");
+
+      function typeWriter() {
+        const currentText = texts[textIndex];
+
+        if (!isDeleting) {
+          staticTextElement.textContent = currentText.substring(
+            0,
+            charIndex + 1,
+          );
+          charIndex++;
+
+          if (charIndex === currentText.length) {
+            isDeleting = true;
+            setTimeout(typeWriter, 2000); // 打完停留2秒
+            return;
+          }
+        } else {
+          staticTextElement.textContent = currentText.substring(
+            0,
+            charIndex - 1,
+          );
+          charIndex--;
+
+          if (charIndex === 0) {
+            isDeleting = false;
+            textIndex = (textIndex + 1) % texts.length;
+          }
+        }
+
+        const typingSpeed = isDeleting ? 100 : 150; // 删除稍快，打字稍慢
+        setTimeout(typeWriter, typingSpeed);
+      }
+
+      // 初始化 Lucide 图标并启动打字机
+      document.addEventListener("DOMContentLoaded", function () {
+        typeWriter();
+        lucide.createIcons();
+      });
+    </script>
+  </body>
+</html>

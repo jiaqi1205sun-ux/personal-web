@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>全部文章 | 我的产品之旅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              pink: {
+                50: "#FDF2F8",
+                100: "#FCE7F3",
+                200: "#FBCFE8",
+                300: "#F9A8D4",
+                400: "#F472B6",
+                500: "#EC4899",
+                600: "#DB2777",
+                700: "#BE185D",
+                800: "#9D174D",
+                900: "#831843",
+              },
+            },
+            fontFamily: {
+              pixel: ['"Press Start 2P"', '"ZCOOL KuaiLe"', "cursive"],
+              zhPixel: ['"ZCOOL KuaiLe"', '"Press Start 2P"', "cursive"],
+              sans: ['"Noto Sans SC"', "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Noto Sans SC", sans-serif;
+        background-color: #fdf2f8;
+        color: #831843;
+        scroll-behavior: smooth;
+        image-rendering: pixelated;
+      }
+
+      .font-pixel {
+        font-family: "Press Start 2P", "ZCOOL KuaiLe", cursive;
+      }
+      .font-zh-pixel {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+      }
+
+      .pixel-card {
+        background: white;
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        transition: all 0.2s ease;
+        image-rendering: pixelated;
+      }
+      .pixel-card:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0px 0px #f472b6;
+      }
+
+      .pixel-tag {
+        display: inline-block;
+        background: #fbcfe8;
+        color: #be185d;
+        border: 2px solid #be185d;
+        padding: 4px 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        image-rendering: pixelated;
+        box-shadow: 2px 2px 0px 0px #be185d;
+      }
+
+      .pixel-btn {
+        position: relative;
+        display: inline-block;
+        background: #ec4899;
+        color: white;
+        border: none;
+        cursor: pointer;
+        image-rendering: pixelated;
+        transition: transform 0.1s;
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          4px 4px 0px 0px #831843;
+      }
+      .pixel-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          6px 6px 0px 0px #831843;
+      }
+      .pixel-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          2px 2px 0px 0px #831843;
+      }
+
+      .pixel-btn-outline {
+        position: relative;
+        display: inline-block;
+        background: transparent;
+        color: #ec4899;
+        border: 4px solid #ec4899;
+        cursor: pointer;
+        image-rendering: pixelated;
+        transition: transform 0.1s;
+        box-shadow: 4px 4px 0px 0px #ec4899;
+      }
+      .pixel-btn-outline:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        background: rgba(236, 72, 153, 0.1);
+      }
+      .pixel-btn-outline:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0px 0px #ec4899;
+      }
+
+      .pixel-nav {
+        background: #fdf2f8;
+        border-bottom: 4px solid #831843;
+        image-rendering: pixelated;
+      }
+
+      .pixel-menu {
+        background: #fdf2f8;
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+      }
+
+      .pixel-box {
+        background: white;
+        border: 3px solid #831843;
+        box-shadow: 4px 4px 0px 0px #ec4899;
+        padding: 16px;
+      }
+
+      .pixel-divider {
+        height: 8px;
+        background: repeating-linear-gradient(
+          90deg,
+          #ec4899 0px,
+          #ec4899 8px,
+          transparent 8px,
+          transparent 16px
+        );
+      }
+
+      .pixel-bg {
+        background-image:
+          radial-gradient(circle, #f9a8d4 2px, transparent 2px),
+          radial-gradient(circle, #fbcfe8 2px, transparent 2px);
+        background-size: 32px 32px;
+        background-position:
+          0 0,
+          16px 16px;
+      }
+
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #fdf2f8;
+        border-left: 3px solid #831843;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ec4899;
+        border: 3px solid #831843;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #f472b6;
+      }
+
+      .sidebar-wrapper {
+        width: 220px;
+        flex-shrink: 0;
+        height: fit-content;
+      }
+
+      .sidebar {
+        background: white;
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        padding: 20px;
+        position: sticky;
+        top: 2rem;
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 8px;
+      }
+      .sidebar::-webkit-scrollbar-track {
+        background: #fdf2f8;
+        border-left: 2px solid #831843;
+      }
+      .sidebar::-webkit-scrollbar-thumb {
+        background: #ec4899;
+        border: 2px solid #831843;
+      }
+      .sidebar::-webkit-scrollbar-thumb:hover {
+        background: #f472b6;
+      }
+
+      .sidebar-title {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #831843;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 2px dashed #ec4899;
+      }
+
+      .category-item {
+        display: block;
+        padding: 10px 14px;
+        margin-bottom: 8px;
+        color: #831843;
+        font-weight: 600;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+        border-radius: 0;
+      }
+
+      .category-item:hover {
+        background: #fbcfe8;
+        border-color: #be185d;
+      }
+
+      .category-item.active {
+        background: #ec4899;
+        color: white;
+        border-color: #831843;
+        box-shadow: 3px 3px 0px 0px #831843;
+      }
+
+      .article-card {
+        background: white;
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        padding: 20px;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .article-card:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 9px 9px 0px 0px #f472b6;
+      }
+
+      .article-card-title {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #831843;
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+
+      .article-card-summary {
+        color: #9d174d;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+
+      .article-card-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .article-card-date {
+        color: #be185d;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .mobile-tabs {
+        display: none;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 12px 0;
+        border-bottom: 4px solid #831843;
+        background: white;
+        margin-bottom: 20px;
+      }
+
+      .mobile-tab {
+        display: inline-block;
+        padding: 8px 16px;
+        margin-right: 8px;
+        border: 2px solid #831843;
+        background: white;
+        color: #831843;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .mobile-tab:hover {
+        background: #fbcfe8;
+      }
+
+      .mobile-tab.active {
+        background: #ec4899;
+        color: white;
+        border-color: #831843;
+        box-shadow: 3px 3px 0px 0px #831843;
+      }
+
+      @media (max-width: 1024px) {
+        .sidebar-wrapper {
+          width: 180px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar-wrapper {
+          display: none;
+        }
+        .mobile-tabs {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <div class="max-w-6xl mx-auto px-6">
+      <section class="py-8">
+        <div class="mb-8 fade-in">
+          <a
+            href="index_pixel.html"
+            class="pixel-btn-outline px-6 py-2 font-bold text-sm inline-flex items-center gap-2"
+          >
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            返回首页
+          </a>
+        </div>
+      </section>
+
+      <section class="pb-20">
+        <div class="mb-8 fade-in">
+          <h1
+            class="font-zh-pixel text-2xl md:text-3xl font-bold text-pink-900 mb-3"
+          >
+            全部文章
+          </h1>
+          <div class="pixel-divider w-32"></div>
+        </div>
+
+        <div class="mobile-tabs fade-in" id="mobileTabs">
+          <div class="mobile-tab active" data-category="all">全部</div>
+          <div class="mobile-tab" data-category="产品认知">产品认知</div>
+          <div class="mobile-tab" data-category="日常积累">日常积累</div>
+          <div class="mobile-tab" data-category="AI">AI</div>
+          <div class="mobile-tab" data-category="my life">my life</div>
+        </div>
+
+        <div class="flex gap-8 fade-in">
+          <div class="sidebar-wrapper hidden md:block">
+            <div class="sidebar">
+              <h3 class="sidebar-title">文章分类</h3>
+              <div class="category-item active" data-category="all">全部</div>
+              <div class="category-item" data-category="产品认知">产品认知</div>
+              <div class="category-item" data-category="日常积累">日常积累</div>
+              <div class="category-item" data-category="AI">AI</div>
+              <div class="category-item" data-category="my life">my life</div>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              id="articleGrid"
+            ></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 页脚 - 与首页完全一致 -->
+    <footer class="py-8 bg-pink-900 text-pink-300 border-t-4 border-pink-500">
+      <div
+        class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4"
+      >
+        <p class="text-sm font-bold">
+          2026 我的产品之旅 · 用 Lucide 图标和 Claude Code 构建
+        </p>
+        <div class="flex gap-6 text-sm font-bold">
+          <a
+            href="index_pixel.html#projects"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+          >
+            项目
+          </a>
+          <a
+            href="index_pixel.html#awards"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+          >
+            奖项
+          </a>
+          <a
+            href="articles.html"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+          >
+            文章
+          </a>
+          <a
+            href="index_pixel.html#about"
+            class="hover:text-white transition-colors border-b-2 border-transparent hover:border-white"
+          >
+            关于
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll(".fade-in").forEach((el) => {
+        observer.observe(el);
+      });
+
+      const articles = [
+        {
+          id: 1,
+          category: "产品认知",
+          title: "《俞军产品方法论》读书笔记",
+          summary:
+            "学习《俞军产品方法论》的笔记整理，包含用户模型、交易模型、产品经理成长等核心内容。",
+          date: "2024.12",
+        },
+        {
+          id: 2,
+          category: "产品认知",
+          title: "产品需求文档怎么写？核心模块与方法论",
+          summary: "完整讲解PRD的核心组成、撰写流程、模板框架，新手入门必备。",
+          date: "2026.04.15",
+        },
+        {
+          id: 3,
+          category: "产品认知",
+          title: "用户体验五要素：从结构到视觉的思考",
+          summary: "从战略层到表现层，五层要素逐一拆解，附案例说明。",
+          date: "2026.04.10",
+        },
+        {
+          id: 4,
+          category: "产品认知",
+          title: "如何做产品竞品分析？步骤与模板",
+          summary: "竞品分析的完整方法论、信息收集渠道、对比框架分享。",
+          date: "2026.04.05",
+        },
+        {
+          id: 5,
+          category: "产品认知",
+          title: "产品PRD撰写规范与常见误区",
+          summary: "整理撰写PRD时的常见错误、规范建议，避免踩坑指南。",
+          date: "2026.03.30",
+        },
+        {
+          id: 6,
+          category: "日常积累",
+          title: "CSS 像素风技巧总结",
+          summary: "如何用纯CSS实现像素风格UI，技巧与代码片段分享。",
+          date: "2026.03.25",
+        },
+        {
+          id: 7,
+          category: "日常积累",
+          title: "JavaScript 数组常用方法整理",
+          summary: "map、filter、reduce、forEach等常用数组方法的详细总结。",
+          date: "2026.03.20",
+        },
+        {
+          id: 8,
+          category: "日常积累",
+          title: "前端面试高频CSS手写题",
+          summary: "三角形、扇形、圣杯布局、双飞翼布局等高频面试题整理。",
+          date: "2026.03.15",
+        },
+        {
+          id: 9,
+          category: "日常积累",
+          title: "Markdown 排版与写作技巧",
+          summary: "Markdown常用语法、排版技巧、写作规范分享。",
+          date: "2026.03.10",
+        },
+        {
+          id: 10,
+          category: "AI",
+          title: "Transformer 注意力机制通俗理解",
+          summary: "不用数学公式，用大白话讲明白Transformer的核心思想。",
+          date: "2026.03.05",
+        },
+        {
+          id: 11,
+          category: "AI",
+          title: "大模型提示词工程最佳实践",
+          summary: "提示词的编写技巧、思维链、角色设定、输出格式优化。",
+          date: "2026.02.28",
+        },
+        {
+          id: 12,
+          category: "AI",
+          title: "AI 辅助前端开发工作流",
+          summary: "如何用AI提高代码效率，完整工作流分享。",
+          date: "2026.02.23",
+        },
+        {
+          id: 13,
+          category: "AI",
+          title: "词嵌入与向量数据库基础",
+          summary: "向量是什么？Embedding原理，向量数据库应用场景介绍。",
+          date: "2026.02.18",
+        },
+        {
+          id: 14,
+          category: "my life",
+          title: "20岁生日感悟与成长记录",
+          summary: "回顾过去一年的成长，写下给自己的祝福。",
+          date: "2026.02.14",
+        },
+        {
+          id: 15,
+          category: "my life",
+          title: "每周学习计划与复盘模板",
+          summary: "分享我用的周计划模板，帮助你高效规划学习。",
+          date: "2026.02.10",
+        },
+        {
+          id: 16,
+          category: "my life",
+          title: "我的书桌与数码好物分享",
+          summary: "晒晒我的桌面布置、常用数码产品与软件工具。",
+          date: "2026.02.05",
+        },
+        {
+          id: 17,
+          category: "my life",
+          title: "读书心得：《设计心理学》",
+          summary: "唐纳德诺曼经典著作的读书笔记与感悟。",
+          date: "2026.01.30",
+        },
+      ];
+
+      let currentCategory = "all";
+
+      function renderArticleCard(article) {
+        return `
+          <a href="detail.html?id=${article.id}" class="article-card block hover:no-underline">
+            <h3 class="article-card-title">${article.title}</h3>
+            <p class="article-card-summary">${article.summary}</p>
+            <div class="article-card-meta">
+              <span class="pixel-tag text-xs">${article.category}</span>
+              <span class="article-card-date">${article.date}</span>
+            </div>
+          </a>
+        `;
+      }
+
+      function renderArticles(category) {
+        const grid = document.getElementById("articleGrid");
+        const filteredArticles =
+          category === "all"
+            ? articles
+            : articles.filter((article) => article.category === category);
+
+        grid.innerHTML = filteredArticles.map(renderArticleCard).join("");
+      }
+
+      function setActiveCategory(category) {
+        currentCategory = category;
+
+        document.querySelectorAll(".category-item").forEach((item) => {
+          item.classList.remove("active");
+          if (item.dataset.category === category) {
+            item.classList.add("active");
+          }
+        });
+
+        document.querySelectorAll(".mobile-tab").forEach((tab) => {
+          tab.classList.remove("active");
+          if (tab.dataset.category === category) {
+            tab.classList.add("active");
+          }
+        });
+
+        renderArticles(category);
+      }
+
+      document.querySelectorAll(".category-item").forEach((item) => {
+        item.addEventListener("click", () => {
+          setActiveCategory(item.dataset.category);
+        });
+      });
+
+      document.querySelectorAll(".mobile-tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          setActiveCategory(tab.dataset.category);
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        lucide.createIcons();
+        renderArticles("all");
+      });
+    </script>
+  </body>
+</html>

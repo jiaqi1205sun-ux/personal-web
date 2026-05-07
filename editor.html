@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文章编辑器 | 我的产品之旅</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              pink: {
+                50: "#FDF2F8",
+                100: "#FCE7F3",
+                200: "#FBCFE8",
+                300: "#F9A8D4",
+                400: "#F472B6",
+                500: "#EC4899",
+                600: "#DB2777",
+                700: "#BE185D",
+                800: "#9D174D",
+                900: "#831843",
+              },
+            },
+            fontFamily: {
+              pixel: ['"Press Start 2P"', '"ZCOOL KuaiLe"', "cursive"],
+              zhPixel: ['"ZCOOL KuaiLe"', '"Press Start 2P"', "cursive"],
+              sans: ['"Noto Sans SC"', "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Noto Sans SC", sans-serif;
+        background: #fdf2f8;
+        color: #831843;
+        scroll-behavior: smooth;
+        image-rendering: pixelated;
+      }
+
+      .font-pixel {
+        font-family: "Press Start 2P", "ZCOOL KuaiLe", cursive;
+      }
+      .font-zhPixel {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+      }
+
+      .pixel-card {
+        background: white;
+        border: 4px solid #831843;
+        box-shadow: 6px 6px 0px 0px #ec4899;
+        transition: all 0.2s ease;
+        image-rendering: pixelated;
+      }
+
+      .pixel-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #ec4899;
+        color: white;
+        border: none;
+        cursor: pointer;
+        image-rendering: pixelated;
+        transition: transform 0.1s;
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          4px 4px 0px 0px #831843;
+        padding: 0.75rem 1.5rem;
+        font-weight: 700;
+      }
+      .pixel-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          6px 6px 0px 0px #831843;
+      }
+      .pixel-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow:
+          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+          2px 2px 0px 0px #831843;
+      }
+
+      .pixel-btn-secondary {
+        background: white;
+        color: #831843;
+        border: 4px solid #831843;
+        box-shadow: 4px 4px 0px 0px #ec4899;
+      }
+
+      .pixel-divider {
+        height: 8px;
+        background: repeating-linear-gradient(
+          90deg,
+          #ec4899 0px,
+          #ec4899 8px,
+          transparent 8px,
+          transparent 16px
+        );
+      }
+
+      .editor-container {
+        display: flex;
+        height: calc(100vh - 200px);
+        min-height: 500px;
+        gap: 1rem;
+      }
+
+      .editor-pane {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .editor-pane-header {
+        background: #fbcfe8;
+        border-bottom: 4px solid #831843;
+        padding: 0.75rem 1rem;
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+        font-weight: 700;
+        color: #831843;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .editor-textarea {
+        flex: 1;
+        width: 100%;
+        padding: 1rem;
+        font-family: "Courier New", Consolas, monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        border: none;
+        outline: none;
+        resize: none;
+        background: #fff;
+        color: #831843;
+      }
+
+      .editor-textarea::placeholder {
+        color: #be185d;
+        opacity: 0.6;
+      }
+
+      .preview-pane {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        background: #fff;
+      }
+
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #fdf2f8;
+        border-left: 3px solid #831843;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #ec4899;
+        border: 3px solid #831843;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #f472b6;
+      }
+
+      /* 文章内容样式（与 detail.html 一致） */
+      .article-content h1 {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #831843;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .article-content h2 {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #9d174d;
+        margin-top: 1.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .article-content h3 {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #be185d;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .article-content p {
+        color: #831843;
+        line-height: 1.8;
+        margin-bottom: 1rem;
+      }
+
+      .article-content ul,
+      .article-content ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .article-content li {
+        color: #831843;
+        line-height: 1.8;
+        margin-bottom: 0.5rem;
+      }
+
+      .article-content strong {
+        color: #831843;
+        font-weight: 700;
+      }
+
+      .article-content .ml-8 {
+        margin-left: 2rem;
+      }
+
+      .article-content .text-pink-700 {
+        color: #db2777;
+      }
+
+      .article-content .text-pink-800 {
+        color: #9d174d;
+      }
+
+      .article-content .font-bold {
+        font-weight: 700;
+      }
+
+      .article-content .mr-2 {
+        margin-right: 0.5rem;
+      }
+
+      .article-content .mb-1 {
+        margin-bottom: 0.25rem;
+      }
+
+      .article-content .mb-2 {
+        margin-bottom: 0.5rem;
+      }
+
+      .article-content .italic {
+        font-style: italic;
+      }
+
+      .article-content br {
+        display: block;
+        content: "";
+        margin-top: 0.5rem;
+      }
+
+      .article-content img {
+        max-width: 100%;
+        height: auto;
+        margin: 1.5rem 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 3px solid #831843;
+      }
+
+      .article-content code {
+        background: #fbcfe8;
+        color: #be185d;
+        padding: 0.125rem 0.375rem;
+        border-radius: 4px;
+        font-family: "Courier New", Consolas, monospace;
+      }
+
+      .article-content pre {
+        background: #fbcfe8;
+        border: 3px solid #831843;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+
+      .article-content pre code {
+        background: transparent;
+        padding: 0;
+        border-radius: 0;
+      }
+
+      .article-content blockquote {
+        border-left: 4px solid #ec4899;
+        padding-left: 1rem;
+        margin: 1rem 0;
+        color: #9d174d;
+        font-style: italic;
+      }
+
+      .output-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(131, 24, 67, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 1rem;
+      }
+
+      .output-modal.hidden {
+        display: none;
+      }
+
+      .output-modal-content {
+        background: white;
+        border: 4px solid #831843;
+        box-shadow: 8px 8px 0px 0px #ec4899;
+        max-width: 900px;
+        width: 100%;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .output-modal-header {
+        background: #fbcfe8;
+        border-bottom: 4px solid #831843;
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .output-modal-body {
+        flex: 1;
+        overflow: auto;
+        padding: 1rem;
+      }
+
+      .output-modal-footer {
+        border-top: 4px solid #831843;
+        padding: 1rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+      }
+
+      .output-textarea {
+        width: 100%;
+        height: 400px;
+        padding: 1rem;
+        font-family: "Courier New", Consolas, monospace;
+        font-size: 12px;
+        line-height: 1.5;
+        border: 3px solid #831843;
+        background: #fdf2f8;
+        color: #831843;
+        resize: none;
+      }
+
+      .help-section {
+        background: white;
+        border: 4px solid #831843;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+      }
+
+      .help-section h2 {
+        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
+        color: #831843;
+        margin-bottom: 1rem;
+      }
+
+      .help-section ol {
+        margin-left: 1.5rem;
+      }
+
+      .help-section li {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 768px) {
+        .editor-container {
+          flex-direction: column;
+          height: auto;
+        }
+
+        .editor-pane {
+          min-height: 400px;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- 导航栏 -->
+    <nav
+      class="pixel-nav sticky top-0 z-50 border-b-4 border-pink-900 bg-pink-50"
+    >
+      <div class="max-w-7xl mx-auto px-4 py-3">
+        <div class="flex items-center justify-between">
+          <a
+            href="index_pixel.html"
+            class="font-zhPixel text-lg text-pink-900 font-bold hover:text-pink-600 transition-colors flex items-center gap-2"
+          >
+            <i data-lucide="home" class="w-5 h-5"></i>
+            我的产品之旅
+          </a>
+          <div class="hidden md:flex items-center gap-6">
+            <a
+              href="index_pixel.html"
+              class="text-pink-900 hover:text-pink-600 transition-colors font-bold"
+              >首页</a
+            >
+            <a
+              href="articles.html"
+              class="text-pink-900 hover:text-pink-600 transition-colors font-bold"
+              >全部文章</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <div class="max-w-7xl mx-auto px-4 py-6">
+      <!-- 标题区 -->
+      <div class="text-center mb-6">
+        <h1
+          class="font-zhPixel text-2xl md:text-3xl text-pink-900 font-bold mb-2"
+        >
+          ✏️ 文章编辑器
+        </h1>
+        <p class="text-pink-700">
+          在左侧编写 Markdown，右侧实时预览，一键导出发布！
+        </p>
+        <div class="pixel-divider w-48 mx-auto mt-4"></div>
+      </div>
+
+      <!-- 工具栏 -->
+      <div class="flex flex-wrap gap-3 mb-4 justify-center">
+        <button class="pixel-btn" onclick="loadTemplate()">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+          加载模板
+        </button>
+        <button class="pixel-btn pixel-btn-secondary" onclick="clearEditor()">
+          <i data-lucide="trash-2" class="w-4 h-4"></i>
+          清空
+        </button>
+        <button class="pixel-btn pixel-btn-secondary" onclick="copyMarkdown()">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          复制 Markdown
+        </button>
+        <button class="pixel-btn" onclick="showOutput()">
+          <i data-lucide="code" class="w-4 h-4"></i>
+          导出 HTML 代码
+        </button>
+      </div>
+
+      <!-- 编辑器主体 -->
+      <div class="pixel-card editor-container">
+        <!-- 左侧编辑区 -->
+        <div class="editor-pane border-r-4 border-pink-900">
+          <div class="editor-pane-header">
+            <i data-lucide="edit-3" class="w-5 h-5"></i>
+            Markdown 编辑区
+          </div>
+          <textarea
+            id="markdownEditor"
+            class="editor-textarea"
+            placeholder="在这里输入你的 Markdown 文章..."
+          ></textarea>
+        </div>
+
+        <!-- 右侧预览区 -->
+        <div class="editor-pane">
+          <div class="editor-pane-header">
+            <i data-lucide="eye" class="w-5 h-5"></i>
+            实时预览
+          </div>
+          <div id="previewPane" class="preview-pane article-content">
+            <p class="text-pink-600 italic">开始编辑，这里会显示实时预览...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 使用说明 -->
+      <div class="help-section">
+        <h2 class="text-xl">📖 使用说明</h2>
+        <ol>
+          <li>
+            <strong>编写文章：</strong>在左侧编辑区输入 Markdown 格式的文章内容
+          </li>
+          <li>
+            <strong>实时预览：</strong
+            >右侧会自动渲染预览效果，与博客详情页完全一致
+          </li>
+          <li>
+            <strong>加载模板：</strong>点击「加载模板」按钮可以加载常用语法示例
+          </li>
+          <li>
+            <strong>导出发布：</strong>点击「导出 HTML 代码」，复制内容，然后：
+            <ol style="margin-left: 1.5rem; margin-top: 0.5rem">
+              <li>打开 detail.html 文件</li>
+              <li>找到 articles 数组，添加新的文章对象</li>
+              <li>将复制的 content 内容粘贴进去</li>
+              <li>设置好 id、tag、date、readtime、title 等字段</li>
+              <li>更新 prev 和 next 的导航关系</li>
+            </ol>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 导出模态框 -->
+    <div id="outputModal" class="output-modal hidden">
+      <div class="output-modal-content">
+        <div class="output-modal-header">
+          <h3 class="font-zhPixel text-lg text-pink-900 font-bold">
+            📋 导出的文章数据
+          </h3>
+          <button
+            onclick="hideOutput()"
+            class="text-pink-900 hover:text-pink-600"
+          >
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <div class="output-modal-body">
+          <p class="text-pink-700 mb-3 text-sm">
+            复制下面的代码，粘贴到 detail.html 的 articles 数组中：
+          </p>
+          <textarea
+            id="outputTextarea"
+            class="output-textarea"
+            readonly
+          ></textarea>
+        </div>
+        <div class="output-modal-footer">
+          <button class="pixel-btn pixel-btn-secondary" onclick="hideOutput()">
+            关闭
+          </button>
+          <button class="pixel-btn" onclick="copyOutput()">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            复制代码
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 初始化 Lucide 图标
+      lucide.createIcons();
+
+      // Markdown 渲染函数（与 detail.html 保持一致）
+      function renderMarkdown(text) {
+        let html = text
+          .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+          .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+          .replace(/^# (.*$)/gim, "<h1>$1</h1>")
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*(.*?)\*/g, "<em>$1</em>")
+          .replace(
+            /!\[([^\]]*)\]\(([^\)]+)\)/g,
+            '<img src="$2" alt="$1" class="max-w-full h-auto my-4 rounded shadow-lg">',
+          );
+
+        let tempHtml = "";
+        let inCode = false;
+        let lines = html.split("\n");
+        let codeBuffer = "";
+
+        for (let i = 0; i < lines.length; i++) {
+          if (lines[i].startsWith("```")) {
+            if (!inCode) {
+              inCode = true;
+              codeBuffer = "";
+            } else {
+              tempHtml += "<pre><code>" + codeBuffer + "</code></pre>";
+              inCode = false;
+            }
+          } else if (inCode) {
+            codeBuffer += lines[i] + "\n";
+          } else {
+            tempHtml += lines[i] + "\n";
+          }
+        }
+
+        html = tempHtml;
+        html = html.replace(/^> (.*$)/gim, "<blockquote>$1</blockquote>");
+
+        let finalHtml = "";
+        lines = html.split("\n");
+
+        for (let i = 0; i < lines.length; i++) {
+          let line = lines[i];
+
+          if (!line || !line.trim()) {
+            finalHtml += "<br>";
+            continue;
+          }
+
+          if (
+            line.startsWith("<h") ||
+            line.startsWith("<pre") ||
+            line.startsWith("</") ||
+            line.startsWith("<blockquote") ||
+            line.startsWith("<img")
+          ) {
+            finalHtml += line;
+            continue;
+          }
+
+          let orderedMatch = line.trim().match(/^(\d+)\. (.*)/);
+          if (orderedMatch) {
+            let num = orderedMatch[1];
+            let content = orderedMatch[2];
+            finalHtml += `<div class="mb-2"><span class="font-bold mr-2 text-pink-700">${num}.</span><span>${content}</span></div>`;
+            continue;
+          }
+
+          if (
+            line.startsWith("   Idea") ||
+            line.startsWith("    Idea") ||
+            line.startsWith("   Q:") ||
+            line.startsWith("    Q:")
+          ) {
+            let indent = line.startsWith("    ") ? 4 : 3;
+            let content = line.substring(indent);
+            finalHtml += `<div class="ml-8 text-pink-800 italic mb-1">${content}</div>`;
+            continue;
+          }
+
+          if (line.startsWith("   ") || line.startsWith("    ")) {
+            let indent = line.startsWith("    ") ? 4 : 3;
+            let content = line.substring(indent);
+            finalHtml += `<div class="ml-8 text-pink-800 mb-1">${content}</div>`;
+            continue;
+          }
+
+          finalHtml += `<p>${line}</p>`;
+        }
+
+        return finalHtml;
+      }
+
+      // 模板内容
+      const templateContent = `# 文章标题
+
+## 二级标题
+
+这是一段普通的**加粗文本**，这是一段*斜体文本*。
+
+### 三级标题
+
+1. 这是第一条有序列表项
+   Idea: 这是缩进的 Idea 内容
+2. 这是第二条有序列表项
+   Q: 这是一个问题？
+3. 这是第三条有序列表项
+
+> 这是一段引用文字，用来突出显示重要内容。
+
+### 代码示例
+
+\`\`\`javascript
+function hello() {
+  console.log("Hello, World!");
+}
+\`\`\`
+
+### 图片示例
+
+![图片描述](image.png)
+
+### 段落内容
+
+这是一个普通的段落。你可以在这里写任何想要的内容，包括**加粗**和*斜体*等格式。
+
+- 无序列表项一
+- 无序列表项二
+- 无序列表项三
+
+感谢阅读！`;
+
+      // 获取编辑区元素
+      const editor = document.getElementById("markdownEditor");
+      const previewPane = document.getElementById("previewPane");
+
+      // 实时预览
+      editor.addEventListener("input", function () {
+        const markdown = editor.value;
+        previewPane.innerHTML = renderMarkdown(markdown);
+      });
+
+      // 加载模板
+      function loadTemplate() {
+        editor.value = templateContent;
+        previewPane.innerHTML = renderMarkdown(templateContent);
+      }
+
+      // 清空编辑器
+      function clearEditor() {
+        if (confirm("确定要清空编辑器吗？")) {
+          editor.value = "";
+          previewPane.innerHTML =
+            '<p class="text-pink-600 italic">开始编辑，这里会显示实时预览...</p>';
+        }
+      }
+
+      // 复制 Markdown
+      function copyMarkdown() {
+        navigator.clipboard.writeText(editor.value).then(() => {
+          alert("Markdown 已复制到剪贴板！");
+        });
+      }
+
+      // 显示导出模态框
+      function showOutput() {
+        const markdown = editor.value;
+        const escapedContent = markdown
+          .replace(/\\/g, "\\\\")
+          .replace(/`/g, "\\`")
+          .replace(/\$/g, "\\$");
+
+        const output = `{
+  id: [新文章ID],
+  tag: "[分类标签]",
+  date: "2026-05-07",
+  readtime: "[阅读时长]",
+  title: "[文章标题]",
+  content: \`${escapedContent}\`,
+  prev: [上一篇文章ID],
+  next: [下一篇文章ID],
+},`;
+
+        document.getElementById("outputTextarea").value = output;
+        document.getElementById("outputModal").classList.remove("hidden");
+      }
+
+      // 隐藏导出模态框
+      function hideOutput() {
+        document.getElementById("outputModal").classList.add("hidden");
+      }
+
+      // 复制输出内容
+      function copyOutput() {
+        const textarea = document.getElementById("outputTextarea");
+        navigator.clipboard.writeText(textarea.value).then(() => {
+          alert("代码已复制到剪贴板！现在可以粘贴到 detail.html 中了！");
+        });
+      }
+
+      // 点击模态框外部关闭
+      document
+        .getElementById("outputModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            hideOutput();
+          }
+        });
+
+      // 初始化时加载模板
+      loadTemplate();
+    </script>
+  </body>
+</html>
