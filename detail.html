@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -495,23 +495,8 @@
               style="border-radius: 8px"
               onclick="toggleAiSummary()"
             >
-              <!-- 左侧数据 -->
-              <div class="flex items-center gap-4">
-                <div class="flex items-center gap-1 text-pink-700 text-sm">
-                  <i data-lucide="heart" class="w-4 h-4"></i>
-                  <span class="font-bold">128</span>
-                </div>
-                <div class="flex items-center gap-1 text-pink-700 text-sm">
-                  <i data-lucide="message-circle" class="w-4 h-4"></i>
-                  <span class="font-bold">32</span>
-                </div>
-                <div class="flex items-center gap-1 text-pink-700 text-sm">
-                  <i data-lucide="eye" class="w-4 h-4"></i>
-                  <span class="font-bold">512</span>
-                </div>
-              </div>
               <!-- 右侧AI速览标签 -->
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 ml-auto">
                 <div
                   class="flex items-center gap-1.5 bg-pink-100 border-2 border-pink-900 px-3 py-1.5"
                 >
@@ -1043,11 +1028,7 @@
         }
 
         // 重新渲染所有图标
-        try {
-          lucide.createIcons();
-        } catch (e) {
-          console.log("图标更新跳过（不影响核心功能）");
-        }
+        initIcons();
       }
 
       // ==================== AI速览功能开始 ====================
@@ -1132,14 +1113,12 @@
         console.log(
           "[AI速览] ============= 开始调用阿里云百炼API =============",
         );
+        console.log("[AI速览] 文章内容长度:", articleContent.length, "字符");
 
-        // 如果没有API Key，显示友好提示
         if (!API_KEY || API_KEY.includes("这里留空")) {
-          console.log("[AI速览] API Key未配置，显示提示信息");
+          console.log("[AI速览] API Key未配置");
           showSummaryState(
-            "1. 请在代码中配置API_KEY后使用AI速览功能\n" +
-              '2. 在detail.html中找到 const API_KEY = "..." 这一行\n' +
-              "3. 填入你的阿里云百炼API Key即可开始使用",
+            "请在代码中配置API_KEY后使用AI速览功能。\n在detail.html中找到 const API_KEY 这一行，填入你的阿里云百炼API Key即可。",
           );
           return;
         }
@@ -1147,24 +1126,12 @@
         showLoadingState();
 
         try {
-          // 构造Prompt
-          const prompt =
-            "你是文章速览助手，请帮我把下面的整篇文章内容提炼成通顺易读的摘要。要求：\n" +
-            "1. 阅读整篇文章的所有章节，不要只看开头部分\n" +
-            "2. 用自然的段落形式表达，不要使用任何Markdown格式（如加粗、星号、序号）\n" +
-            "3. 用换行分隔不同要点，不要用1、2、3等序号\n" +
-            "4. 语言简洁流畅，突出核心观点\n" +
-            "5. 不要在开头添加任何token统计或字符数统计\n" +
-            "文章内容：\n" +
-            articleContent;
-
           const apiUrl =
             "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
           const modelName = "qwen-turbo";
 
           console.log("[AI速览] 请求地址:", apiUrl);
           console.log("[AI速览] 使用模型:", modelName);
-          console.log("[AI速览] Prompt内容:", prompt);
 
           const response = await fetch(apiUrl, {
             method: "POST",
@@ -1176,12 +1143,19 @@
               model: modelName,
               messages: [
                 {
+                  role: "system",
+                  content:
+                    "你是一个文章速览助手。你的任务是通读用户提供的完整文章（包括所有章节），然后用200字以内的简洁中文概括全文核心内容。必须用纯文本段落形式输出，禁止使用Markdown格式、序号、加粗、星号。不要输出任何与文章内容无关的统计数字。",
+                },
+                {
                   role: "user",
-                  content: prompt,
+                  content:
+                    "请通读以下整篇文章的全部内容（从头到尾所有章节），然后用一段简洁的纯文本概括全文核心观点，控制在200字以内：\n\n" +
+                    articleContent,
                 },
               ],
-              temperature: 0.7,
-              max_tokens: 500,
+              temperature: 0.5,
+              max_tokens: 400,
             }),
           });
 
@@ -1191,13 +1165,12 @@
             const errorText = await response.text();
             console.error("[AI速览] API请求失败，响应内容:", errorText);
 
-            // 根据状态码显示不同错误提示
             if (response.status === 401) {
               throw new Error("API Key无效，请检查配置");
             } else if (response.status === 429) {
               throw new Error("请求过于频繁，请稍后再试");
             } else {
-              throw new Error(`API请求失败，状态码: ${response.status}`);
+              throw new Error("API请求失败，状态码: " + response.status);
             }
           }
 
@@ -1215,7 +1188,6 @@
           console.error("[AI速览] 错误信息:", error.message);
           console.error("[AI速览] 错误堆栈:", error.stack);
 
-          // 根据错误信息显示不同提示
           if (error.message.includes("API Key无效")) {
             showErrorState("API Key无效，请检查配置");
           } else if (error.message.includes("请求过于频繁")) {
@@ -1239,11 +1211,7 @@
 
           contentDiv.classList.remove("hidden");
           chevronIcon.setAttribute("data-lucide", "chevron-up");
-          try {
-            lucide.createIcons();
-          } catch (e) {
-            console.log("图标更新跳过（不影响核心功能）");
-          }
+          initIcons();
 
           // 每次展开都调用API生成，不使用缓存
           const article = articles.find((a) => a.id === currentArticleId);
@@ -1256,11 +1224,7 @@
           headerDiv.style.borderRadius = "8px";
           contentDiv.classList.add("hidden");
           chevronIcon.setAttribute("data-lucide", "chevron-down");
-          try {
-            lucide.createIcons();
-          } catch (e) {
-            console.log("图标更新跳过（不影响核心功能）");
-          }
+          initIcons();
         }
       }
 
@@ -1275,12 +1239,22 @@
 
       // ==================== AI速览功能结束 ====================
 
-      document.addEventListener("DOMContentLoaded", function () {
-        try {
-          lucide.createIcons();
-        } catch (e) {
-          console.log("图标库初始化跳过（不影响核心功能）");
+      function initIcons() {
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          try {
+            lucide.createIcons();
+            console.log("[图标] Lucide图标初始化成功");
+          } catch (e) {
+            console.log("[图标] 初始化失败:", e.message);
+          }
+        } else {
+          console.log("[图标] Lucide未加载，1秒后重试");
+          setTimeout(initIcons, 1000);
         }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        initIcons();
         const articleId = getCurrentArticleId();
         currentArticleId = articleId;
         loadArticle(articleId);
