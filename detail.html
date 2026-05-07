@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@0.263.1"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -1201,7 +1201,11 @@
 
           contentDiv.classList.remove("hidden");
           chevronIcon.setAttribute("data-lucide", "chevron-up");
-          lucide.createIcons();
+          try {
+            lucide.createIcons();
+          } catch (e) {
+            console.log("图标更新跳过（不影响核心功能）");
+          }
 
           // 每次展开都调用API生成，不使用缓存
           const article = articles.find((a) => a.id === currentArticleId);
@@ -1214,7 +1218,11 @@
           headerDiv.style.borderRadius = "8px";
           contentDiv.classList.add("hidden");
           chevronIcon.setAttribute("data-lucide", "chevron-down");
-          lucide.createIcons();
+          try {
+            lucide.createIcons();
+          } catch (e) {
+            console.log("图标更新跳过（不影响核心功能）");
+          }
         }
       }
 
@@ -1230,7 +1238,11 @@
       // ==================== AI速览功能结束 ====================
 
       document.addEventListener("DOMContentLoaded", function () {
-        lucide.createIcons();
+        try {
+          lucide.createIcons();
+        } catch (e) {
+          console.log("图标库初始化跳过（不影响核心功能）");
+        }
         const articleId = getCurrentArticleId();
         currentArticleId = articleId;
         loadArticle(articleId);
