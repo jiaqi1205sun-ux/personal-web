@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/lucide@0.263.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
     <script>
       tailwind.config = {
         theme: {
@@ -1041,6 +1041,13 @@
         } else {
           document.getElementById("next-article").style.display = "none";
         }
+
+        // 重新渲染所有图标
+        try {
+          lucide.createIcons();
+        } catch (e) {
+          console.log("图标更新跳过（不影响核心功能）");
+        }
       }
 
       // ==================== AI速览功能开始 ====================
@@ -1059,34 +1066,28 @@
         return tempDiv.textContent || tempDiv.innerText || "";
       }
 
-      // 渲染摘要内容（结构化要点显示）
+      // 渲染摘要内容（纯文本段落显示）
       function renderSummaryContent(summaryText) {
         const summaryDiv = document.getElementById("ai-summary-text");
         summaryDiv.innerHTML = "";
 
-        const lines = summaryText.split("\n").filter((line) => line.trim());
+        // 清理内容：去掉不需要的数字统计（如128、32、512）
+        let cleanedText = summaryText
+          .replace(/^\d+[、.]\s*/gm, "") // 去掉开头的序号
+          .replace(/\*\*([^*]+)\*\*/g, "$1") // 去掉加粗标记
+          .replace(/\*([^*]+)\*/g, "$1") // 去掉斜体标记
+          .replace(/`([^`]+)`/g, "$1") // 去掉代码标记
+          .trim();
+
+        // 分割成行
+        const lines = cleanedText.split("\n").filter((line) => line.trim());
 
         lines.forEach((line) => {
           const trimmedLine = line.trim();
-          const pointDiv = document.createElement("div");
-          pointDiv.className = "summary-point";
-
-          const numMatch = trimmedLine.match(/^(\d+)[.、]\s*(.*)$/);
-          if (numMatch) {
-            const numSpan = document.createElement("span");
-            numSpan.className = "summary-point-number";
-            numSpan.textContent = numMatch[1] + ".";
-
-            const textSpan = document.createElement("span");
-            textSpan.textContent = numMatch[2];
-
-            pointDiv.appendChild(numSpan);
-            pointDiv.appendChild(textSpan);
-          } else {
-            pointDiv.textContent = trimmedLine;
-          }
-
-          summaryDiv.appendChild(pointDiv);
+          const paragraph = document.createElement("p");
+          paragraph.className = "mb-3 last:mb-0";
+          paragraph.textContent = trimmedLine;
+          summaryDiv.appendChild(paragraph);
         });
       }
 
@@ -1148,7 +1149,13 @@
         try {
           // 构造Prompt
           const prompt =
-            "你是文章速览助手，请帮我把下面的文章内容提炼成清晰的结构化要点，用1、2、3…编号列出，语言简洁易懂，突出核心观点，控制在7个要点以内：\n" +
+            "你是文章速览助手，请帮我把下面的整篇文章内容提炼成通顺易读的摘要。要求：\n" +
+            "1. 阅读整篇文章的所有章节，不要只看开头部分\n" +
+            "2. 用自然的段落形式表达，不要使用任何Markdown格式（如加粗、星号、序号）\n" +
+            "3. 用换行分隔不同要点，不要用1、2、3等序号\n" +
+            "4. 语言简洁流畅，突出核心观点\n" +
+            "5. 不要在开头添加任何token统计或字符数统计\n" +
+            "文章内容：\n" +
             articleContent;
 
           const apiUrl =
