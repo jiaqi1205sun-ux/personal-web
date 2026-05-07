@@ -555,7 +555,10 @@
                 </div>
                 <!-- 错误状态 -->
                 <div id="ai-summary-error" class="hidden">
-                  <div class="text-pink-700 font-bold">
+                  <div
+                    id="ai-summary-error-message"
+                    class="text-pink-700 font-bold"
+                  >
                     ⚠️ 生成失败，请稍后重试
                   </div>
                 </div>
@@ -1042,8 +1045,8 @@
 
       // ==================== AI速览功能开始 ====================
 
-      // API Key 配置位置（请在此处填入你的智谱GLM API Key）
-      const API_KEY = "c69396c5808f4e50919d923834592bec.gBorHiBtk1gcVMns";
+      // API Key 配置位置（请在此处填入你的阿里云百炼API Key）
+      const API_KEY = "sk-9e05471b3ae442f2b99d72daa84edbbe";
 
       // AI速览模块状态管理
       let aiSummaryExpanded = false; // 是否已展开
@@ -1098,11 +1101,21 @@
       }
 
       // 显示错误状态
-      function showErrorState() {
+      function showErrorState(customMessage) {
         console.log("[AI速览] 显示错误状态");
         document.getElementById("ai-summary-loading").classList.add("hidden");
         document.getElementById("ai-summary-error").classList.remove("hidden");
         document.getElementById("ai-summary-text").innerHTML = "";
+
+        // 如果有自定义消息，显示它，否则显示默认消息
+        const errorMessageElement = document.getElementById(
+          "ai-summary-error-message",
+        );
+        if (customMessage) {
+          errorMessageElement.textContent = "⚠️ " + customMessage;
+        } else {
+          errorMessageElement.textContent = "⚠️ 生成失败，请稍后重试";
+        }
       }
 
       // 显示摘要内容
@@ -1113,9 +1126,11 @@
         renderSummaryContent(summaryText);
       }
 
-      // 调用智谱GLM API生成摘要
+      // 调用阿里云百炼API生成摘要
       async function generateAiSummary(articleContent) {
-        console.log("[AI速览] ============= 开始调用GLM API =============");
+        console.log(
+          "[AI速览] ============= 开始调用阿里云百炼API =============",
+        );
 
         // 如果没有API Key，显示友好提示
         if (!API_KEY || API_KEY.includes("这里留空")) {
@@ -1123,7 +1138,7 @@
           showSummaryState(
             "1. 请在代码中配置API_KEY后使用AI速览功能\n" +
               '2. 在detail.html中找到 const API_KEY = "..." 这一行\n' +
-              "3. 填入你的智谱GLM API Key即可开始使用",
+              "3. 填入你的阿里云百炼API Key即可开始使用",
           );
           return;
         }
@@ -1137,8 +1152,8 @@
             articleContent;
 
           const apiUrl =
-            "https://open.bigmodel.cn/api/paas/v4/chat/completions";
-          const modelName = "glm-4.7-flash";
+            "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions";
+          const modelName = "qwen-turbo";
 
           console.log("[AI速览] 请求地址:", apiUrl);
           console.log("[AI速览] 使用模型:", modelName);
@@ -1168,7 +1183,15 @@
           if (!response.ok) {
             const errorText = await response.text();
             console.error("[AI速览] API请求失败，响应内容:", errorText);
-            throw new Error(`API请求失败，状态码: ${response.status}`);
+
+            // 根据状态码显示不同错误提示
+            if (response.status === 401) {
+              throw new Error("API Key无效，请检查配置");
+            } else if (response.status === 429) {
+              throw new Error("请求过于频繁，请稍后再试");
+            } else {
+              throw new Error(`API请求失败，状态码: ${response.status}`);
+            }
           }
 
           const data = await response.json();
@@ -1184,7 +1207,15 @@
           console.error("[AI速览] 完整错误对象:", error);
           console.error("[AI速览] 错误信息:", error.message);
           console.error("[AI速览] 错误堆栈:", error.stack);
-          showErrorState();
+
+          // 根据错误信息显示不同提示
+          if (error.message.includes("API Key无效")) {
+            showErrorState("API Key无效，请检查配置");
+          } else if (error.message.includes("请求过于频繁")) {
+            showErrorState("请求过于频繁，请稍后再试");
+          } else {
+            showErrorState();
+          }
         }
       }
 
