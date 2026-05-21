@@ -3,779 +3,970 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>文章编辑器 | 我的产品之旅</title>
+    <title>写文章 - 个人博客编辑器</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=ZCOOL+KuaiLe&family=Press+Start+2P&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              pink: {
-                50: "#FDF2F8",
-                100: "#FCE7F3",
-                200: "#FBCFE8",
-                300: "#F9A8D4",
-                400: "#F472B6",
-                500: "#EC4899",
-                600: "#DB2777",
-                700: "#BE185D",
-                800: "#9D174D",
-                900: "#831843",
-              },
-            },
-            fontFamily: {
-              pixel: ['"Press Start 2P"', '"ZCOOL KuaiLe"', "cursive"],
-              zhPixel: ['"ZCOOL KuaiLe"', '"Press Start 2P"', "cursive"],
-              sans: ['"Noto Sans SC"', "sans-serif"],
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      body {
-        font-family: "Noto Sans SC", sans-serif;
-        background: #fdf2f8;
-        color: #831843;
-        scroll-behavior: smooth;
-        image-rendering: pixelated;
-      }
+    <script
+      src="https://kit.fontawesome.com/1a3a424a2d.js"
+      crossorigin="anonymous"
+    ></script>
 
-      .font-pixel {
+    <style>
+      /* 基础字体 - 与index.html保持一致 */
+      .pixel-font {
         font-family: "Press Start 2P", "ZCOOL KuaiLe", cursive;
       }
-      .font-zhPixel {
+      .font-zh-pixel {
         font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
       }
-
-      .pixel-card {
-        background: white;
-        border: 4px solid #831843;
-        box-shadow: 6px 6px 0px 0px #ec4899;
-        transition: all 0.2s ease;
-        image-rendering: pixelated;
+      .body-font {
+        font-family: "Noto Sans SC", sans-serif;
       }
 
+      /* 像素风按钮 */
       .pixel-btn {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: #ec4899;
+        font-family: "Press Start 2P", "ZCOOL KuaiLe", cursive;
+        font-size: 10px;
+        padding: 8px 16px;
+        background-color: #b93a6f;
         color: white;
         border: none;
         cursor: pointer;
-        image-rendering: pixelated;
-        transition: transform 0.1s;
+        position: relative;
         box-shadow:
-          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
-          4px 4px 0px 0px #831843;
-        padding: 0.75rem 1.5rem;
-        font-weight: 700;
+          4px 4px 0px #8b2a55,
+          inset -2px -2px 0px rgba(0, 0, 0, 0.2),
+          inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+        transition: all 0.1s ease;
       }
       .pixel-btn:hover {
-        transform: translate(-2px, -2px);
-        box-shadow:
-          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
-          6px 6px 0px 0px #831843;
-      }
-      .pixel-btn:active {
         transform: translate(2px, 2px);
         box-shadow:
-          inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
-          2px 2px 0px 0px #831843;
+          2px 2px 0px #8b2a55,
+          inset -2px -2px 0px rgba(0, 0, 0, 0.2),
+          inset 2px 2px 0px rgba(255, 255, 255, 0.2);
+      }
+      .pixel-btn:active {
+        transform: translate(4px, 4px);
+        box-shadow:
+          0px 0px 0px #8b2a55,
+          inset -2px -2px 0px rgba(0, 0, 0, 0.2),
+          inset 2px 2px 0px rgba(255, 255, 255, 0.2);
       }
 
-      .pixel-btn-secondary {
-        background: white;
-        color: #831843;
-        border: 4px solid #831843;
-        box-shadow: 4px 4px 0px 0px #ec4899;
+      /* 像素风边框 */
+      .pixel-border {
+        border: 4px solid #b93a6f;
+        box-shadow:
+          6px 6px 0px #8b2a55,
+          inset 0px 0px 20px rgba(185, 58, 111, 0.1);
       }
 
-      .pixel-divider {
-        height: 8px;
-        background: repeating-linear-gradient(
-          90deg,
-          #ec4899 0px,
-          #ec4899 8px,
-          transparent 8px,
-          transparent 16px
+      /* 波点背景 */
+      .dot-pattern {
+        background-image: radial-gradient(
+          circle,
+          rgba(185, 58, 111, 0.1) 1px,
+          transparent 1px
         );
+        background-size: 20px 20px;
       }
 
-      .editor-container {
-        display: flex;
-        height: calc(100vh - 200px);
-        min-height: 500px;
-        gap: 1rem;
+      /* 编辑器容器 */
+      .editor-wrapper {
+        position: relative;
+        min-height: 600px;
+        background: white;
+        border-radius: 8px;
       }
 
-      .editor-pane {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
-
-      .editor-pane-header {
-        background: #fbcfe8;
-        border-bottom: 4px solid #831843;
-        padding: 0.75rem 1rem;
-        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
-        font-weight: 700;
-        color: #831843;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .editor-textarea {
-        flex: 1;
-        width: 100%;
-        padding: 1rem;
-        font-family: "Courier New", Consolas, monospace;
-        font-size: 14px;
-        line-height: 1.6;
-        border: none;
+      /* 飞书风格编辑器 */
+      .editor-content {
         outline: none;
-        resize: none;
-        background: #fff;
-        color: #831843;
-      }
-
-      .editor-textarea::placeholder {
-        color: #be185d;
-        opacity: 0.6;
-      }
-
-      .preview-pane {
-        flex: 1;
-        overflow-y: auto;
-        padding: 1rem;
-        background: #fff;
-      }
-
-      ::-webkit-scrollbar {
-        width: 12px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #fdf2f8;
-        border-left: 3px solid #831843;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #ec4899;
-        border: 3px solid #831843;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #f472b6;
-      }
-
-      /* 文章内容样式（与 detail.html 一致） */
-      .article-content h1 {
-        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #831843;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-      }
-
-      .article-content h2 {
-        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #9d174d;
-        margin-top: 1.75rem;
-        margin-bottom: 0.75rem;
-      }
-
-      .article-content h3 {
-        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
-        font-size: 1.125rem;
-        font-weight: 700;
-        color: #be185d;
-        margin-top: 1.5rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .article-content p {
-        color: #831843;
+        min-height: 600px;
         line-height: 1.8;
-        margin-bottom: 1rem;
+        font-size: 16px;
+        font-family: "Noto Sans SC", sans-serif;
+        color: #333;
+        padding: 40px 80px;
       }
 
-      .article-content ul,
-      .article-content ol {
-        margin-left: 1.5rem;
-        margin-bottom: 1rem;
+      /* 编辑器占位符 */
+      .editor-content:empty:before {
+        content: attr(data-placeholder);
+        color: #9ca3af;
+        pointer-events: none;
       }
 
-      .article-content li {
-        color: #831843;
-        line-height: 1.8;
-        margin-bottom: 0.5rem;
-      }
-
-      .article-content strong {
-        color: #831843;
+      /* 标题样式 */
+      .editor-content h1 {
+        font-size: 2em;
         font-weight: 700;
+        color: #b93a6f;
+        margin: 24px 0 16px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #fecdd3;
+      }
+      .editor-content h2 {
+        font-size: 1.5em;
+        font-weight: 600;
+        color: #b93a6f;
+        margin: 20px 0 12px;
+      }
+      .editor-content h3 {
+        font-size: 1.25em;
+        font-weight: 600;
+        color: #b93a6f;
+        margin: 16px 0 10px;
+      }
+      .editor-content h4,
+      .editor-content h5,
+      .editor-content h6 {
+        font-size: 1em;
+        font-weight: 600;
+        color: #b93a6f;
+        margin: 12px 0 8px;
       }
 
-      .article-content .ml-8 {
-        margin-left: 2rem;
+      /* 段落 */
+      .editor-content p {
+        margin: 12px 0;
       }
 
-      .article-content .text-pink-700 {
-        color: #db2777;
+      /* 列表 */
+      .editor-content ul,
+      .editor-content ol {
+        padding-left: 28px;
+        margin: 12px 0;
+      }
+      .editor-content li {
+        margin: 6px 0;
+      }
+      .editor-content ul li {
+        list-style-type: disc;
+      }
+      .editor-content ol li {
+        list-style-type: decimal;
       }
 
-      .article-content .text-pink-800 {
-        color: #9d174d;
-      }
-
-      .article-content .font-bold {
-        font-weight: 700;
-      }
-
-      .article-content .mr-2 {
-        margin-right: 0.5rem;
-      }
-
-      .article-content .mb-1 {
-        margin-bottom: 0.25rem;
-      }
-
-      .article-content .mb-2 {
-        margin-bottom: 0.5rem;
-      }
-
-      .article-content .italic {
+      /* 引用块 */
+      .editor-content blockquote {
+        border-left: 4px solid #b93a6f;
+        padding: 12px 16px;
+        margin: 16px 0;
+        background: #fff0f5;
+        color: #666;
         font-style: italic;
       }
 
-      .article-content br {
-        display: block;
-        content: "";
-        margin-top: 0.5rem;
+      /* 代码块 */
+      .editor-content pre {
+        background: #1e1e1e;
+        color: #d4d4d4;
+        padding: 16px;
+        margin: 16px 0;
+        border-radius: 4px;
+        overflow-x: auto;
+        font-family: "Consolas", "Monaco", monospace;
+      }
+      .editor-content code {
+        background: #f3f4f6;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: "Consolas", "Monaco", monospace;
+        font-size: 0.9em;
       }
 
-      .article-content img {
+      /* 高亮 */
+      .editor-content mark {
+        background: #fef08a;
+        padding: 2px 4px;
+        border-radius: 2px;
+      }
+
+      /* 链接 */
+      .editor-content a {
+        color: #b93a6f;
+        text-decoration: underline;
+      }
+
+      /* 图片 */
+      .editor-content img {
         max-width: 100%;
         height: auto;
-        margin: 1.5rem 0;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border: 3px solid #831843;
-      }
-
-      .article-content code {
-        background: #fbcfe8;
-        color: #be185d;
-        padding: 0.125rem 0.375rem;
         border-radius: 4px;
-        font-family: "Courier New", Consolas, monospace;
+        margin: 16px 0;
       }
 
-      .article-content pre {
-        background: #fbcfe8;
-        border: 3px solid #831843;
-        padding: 1rem;
-        border-radius: 8px;
-        overflow-x: auto;
-        margin: 1rem 0;
+      /* 分割线 */
+      .editor-content hr {
+        border: none;
+        border-top: 2px dashed #fecdd3;
+        margin: 24px 0;
       }
 
-      .article-content pre code {
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
-      }
-
-      .article-content blockquote {
-        border-left: 4px solid #ec4899;
-        padding-left: 1rem;
-        margin: 1rem 0;
-        color: #9d174d;
-        font-style: italic;
-      }
-
-      .output-modal {
+      /* 浮动工具栏 */
+      .float-toolbar {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(131, 24, 67, 0.8);
+        background: white;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 4px;
+        display: flex;
+        gap: 1px;
+        z-index: 1000;
+        border-radius: 6px;
+      }
+      .toolbar-btn {
+        width: 32px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        color: #6b7280;
+        border-radius: 4px;
+        transition: all 0.1s;
+      }
+      .toolbar-btn:hover {
+        background: #f3f4f6;
+        color: #b93a6f;
+      }
+      .toolbar-btn.active {
+        background: #fecdd3;
+        color: #b93a6f;
+      }
+
+      /* 快捷菜单 */
+      .quick-menu {
+        position: fixed;
+        background: white;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        padding: 8px;
         z-index: 1000;
-        padding: 1rem;
+        border-radius: 8px;
+        min-width: 200px;
       }
-
-      .output-modal.hidden {
-        display: none;
-      }
-
-      .output-modal-content {
-        background: white;
-        border: 4px solid #831843;
-        box-shadow: 8px 8px 0px 0px #ec4899;
-        max-width: 900px;
-        width: 100%;
-        max-height: 80vh;
+      .quick-menu-item {
         display: flex;
-        flex-direction: column;
-      }
-
-      .output-modal-header {
-        background: #fbcfe8;
-        border-bottom: 4px solid #831843;
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
         align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background 0.1s;
+      }
+      .quick-menu-item:hover {
+        background: #fecdd3;
+      }
+      .quick-menu-item i {
+        color: #b93a6f;
+        font-size: 16px;
+      }
+      .quick-menu-item span {
+        font-family: "Noto Sans SC", sans-serif;
+        font-size: 14px;
+        color: #374151;
       }
 
-      .output-modal-body {
-        flex: 1;
-        overflow: auto;
-        padding: 1rem;
+      /* 像素装饰 */
+      .pixel-decoration {
+        position: fixed;
+        font-size: 20px;
+        opacity: 0.3;
+        pointer-events: none;
       }
 
-      .output-modal-footer {
-        border-top: 4px solid #831843;
-        padding: 1rem;
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-      }
-
-      .output-textarea {
-        width: 100%;
-        height: 400px;
-        padding: 1rem;
-        font-family: "Courier New", Consolas, monospace;
-        font-size: 12px;
-        line-height: 1.5;
-        border: 3px solid #831843;
-        background: #fdf2f8;
-        color: #831843;
-        resize: none;
-      }
-
-      .help-section {
-        background: white;
-        border: 4px solid #831843;
-        padding: 1.5rem;
-        margin-top: 1.5rem;
-      }
-
-      .help-section h2 {
-        font-family: "ZCOOL KuaiLe", "Press Start 2P", cursive;
-        color: #831843;
-        margin-bottom: 1rem;
-      }
-
-      .help-section ol {
-        margin-left: 1.5rem;
-      }
-
-      .help-section li {
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
-      }
-
+      /* 移动端适配 */
       @media (max-width: 768px) {
-        .editor-container {
-          flex-direction: column;
-          height: auto;
+        .editor-content {
+          padding: 20px !important;
         }
-
-        .editor-pane {
-          min-height: 400px;
+        .font-zh-pixel {
+          font-size: 10px !important;
+        }
+        .pixel-btn {
+          font-size: 8px;
+          padding: 6px 12px;
         }
       }
     </style>
   </head>
-  <body class="min-h-screen">
+
+  <body class="bg-[#fff0f5] dot-pattern min-h-screen">
+    <!-- 像素装饰 -->
+    <div class="pixel-decoration top-4 left-4">◻</div>
+    <div class="pixel-decoration top-4 right-4">◻</div>
+    <div class="pixel-decoration bottom-4 left-4">◻</div>
+    <div class="pixel-decoration bottom-4 right-4">◻</div>
+    <div class="pixel-decoration top-20 left-8">♥</div>
+    <div class="pixel-decoration top-20 right-8">♥</div>
+
     <!-- 导航栏 -->
     <nav
-      class="pixel-nav sticky top-0 z-50 border-b-4 border-pink-900 bg-pink-50"
+      class="bg-[#fff0f5] border-b-4 border-[#b93a6f] px-6 py-4 sticky top-0 z-50"
     >
-      <div class="max-w-7xl mx-auto px-4 py-3">
-        <div class="flex items-center justify-between">
-          <a
-            href="index_pixel.html"
-            class="font-zhPixel text-lg text-pink-900 font-bold hover:text-pink-600 transition-colors flex items-center gap-2"
-          >
-            <i data-lucide="home" class="w-5 h-5"></i>
-            我的产品之旅
-          </a>
-          <div class="hidden md:flex items-center gap-6">
-            <a
-              href="index_pixel.html"
-              class="text-pink-900 hover:text-pink-600 transition-colors font-bold"
-              >首页</a
-            >
-            <a
-              href="articles.html"
-              class="text-pink-900 hover:text-pink-600 transition-colors font-bold"
-              >全部文章</a
-            >
-          </div>
-        </div>
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <h1 class="font-zh-pixel text-[#b93a6f] text-sm">写文章</h1>
+        <button id="publish-btn" class="pixel-btn">
+          <i class="fa-solid fa-paper-plane mr-1"></i>一键发布
+        </button>
       </div>
     </nav>
 
-    <!-- 主内容区 -->
-    <div class="max-w-7xl mx-auto px-4 py-6">
-      <!-- 标题区 -->
-      <div class="text-center mb-6">
-        <h1
-          class="font-zhPixel text-2xl md:text-3xl text-pink-900 font-bold mb-2"
-        >
-          ✏️ 文章编辑器
-        </h1>
-        <p class="text-pink-700">
-          在左侧编写 Markdown，右侧实时预览，一键导出发布！
+    <!-- 主编辑区 -->
+    <main class="max-w-4xl mx-auto px-6 py-8">
+      <div class="pixel-border bg-white rounded-lg">
+        <div class="editor-wrapper">
+          <div
+            id="editor"
+            class="editor-content"
+            contenteditable="true"
+            data-placeholder="在这里开始写文章..."
+          ></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- 底部信息 -->
+    <footer
+      class="fixed bottom-0 left-0 right-0 bg-[#fff0f5] border-t-2 border-[#b93a6f] px-6 py-3"
+    >
+      <div
+        class="max-w-4xl mx-auto flex items-center justify-between text-xs text-[#b93a6f]"
+      >
+        <span id="word-count">字数：0</span>
+        <span>💡 关闭页面将清空内容，不保存草稿</span>
+      </div>
+    </footer>
+
+    <!-- 浮动工具栏 -->
+    <div id="float-toolbar" class="float-toolbar hidden">
+      <button class="toolbar-btn" data-action="h1" title="标题1">
+        <i class="fa-solid fa-heading" style="font-size: 18px"></i>
+      </button>
+      <button class="toolbar-btn" data-action="h2" title="标题2">
+        <i class="fa-solid fa-heading" style="font-size: 16px"></i>
+      </button>
+      <button class="toolbar-btn" data-action="h3" title="标题3">
+        <i class="fa-solid fa-heading" style="font-size: 14px"></i>
+      </button>
+      <div class="w-px h-6 bg-gray-200 mx-1"></div>
+      <button class="toolbar-btn" data-action="bold" title="粗体 (Ctrl+B)">
+        <i class="fa-solid fa-bold"></i>
+      </button>
+      <button class="toolbar-btn" data-action="italic" title="斜体 (Ctrl+I)">
+        <i class="fa-solid fa-italic"></i>
+      </button>
+      <button
+        class="toolbar-btn"
+        data-action="underline"
+        title="下划线 (Ctrl+U)"
+      >
+        <i class="fa-solid fa-underline"></i>
+      </button>
+      <button class="toolbar-btn" data-action="strike" title="删除线">
+        <i class="fa-solid fa-strikethrough"></i>
+      </button>
+      <div class="w-px h-6 bg-gray-200 mx-1"></div>
+      <button class="toolbar-btn" data-action="list-ul" title="无序列表">
+        <i class="fa-solid fa-list-ul"></i>
+      </button>
+      <button class="toolbar-btn" data-action="list-ol" title="有序列表">
+        <i class="fa-solid fa-list-ol"></i>
+      </button>
+      <button class="toolbar-btn" data-action="quote" title="引用">
+        <i class="fa-solid fa-quote-right"></i>
+      </button>
+      <div class="w-px h-6 bg-gray-200 mx-1"></div>
+      <button class="toolbar-btn" data-action="code" title="代码块">
+        <i class="fa-solid fa-code"></i>
+      </button>
+      <button class="toolbar-btn" data-action="link" title="插入链接">
+        <i class="fa-solid fa-link"></i>
+      </button>
+      <button class="toolbar-btn" data-action="image" title="插入图片">
+        <i class="fa-solid fa-image"></i>
+      </button>
+      <button class="toolbar-btn" data-action="highlight" title="高亮">
+        <i class="fa-solid fa-highlighter"></i>
+      </button>
+      <div class="w-px h-6 bg-gray-200 mx-1"></div>
+      <button class="toolbar-btn" data-action="undo" title="撤销 (Ctrl+Z)">
+        <i class="fa-solid fa-rotate-left"></i>
+      </button>
+      <button class="toolbar-btn" data-action="redo" title="重做 (Ctrl+Y)">
+        <i class="fa-solid fa-rotate-right"></i>
+      </button>
+      <button class="toolbar-btn" data-action="clear" title="清除格式">
+        <i class="fa-solid fa-eraser"></i>
+      </button>
+    </div>
+
+    <!-- 快捷菜单 -->
+    <div id="quick-menu" class="quick-menu hidden">
+      <div class="quick-menu-item" data-action="h1">
+        <i class="fa-solid fa-heading"></i>
+        <span>标题1</span>
+      </div>
+      <div class="quick-menu-item" data-action="h2">
+        <i class="fa-solid fa-heading"></i>
+        <span>标题2</span>
+      </div>
+      <div class="quick-menu-item" data-action="h3">
+        <i class="fa-solid fa-heading"></i>
+        <span>标题3</span>
+      </div>
+      <div class="quick-menu-item" data-action="list-ul">
+        <i class="fa-solid fa-list-ul"></i>
+        <span>无序列表</span>
+      </div>
+      <div class="quick-menu-item" data-action="list-ol">
+        <i class="fa-solid fa-list-ol"></i>
+        <span>有序列表</span>
+      </div>
+      <div class="quick-menu-item" data-action="quote">
+        <i class="fa-solid fa-quote-right"></i>
+        <span>引用块</span>
+      </div>
+      <div class="quick-menu-item" data-action="code">
+        <i class="fa-solid fa-code"></i>
+        <span>代码块</span>
+      </div>
+      <div class="quick-menu-item" data-action="hr">
+        <i class="fa-solid fa-minus"></i>
+        <span>分割线</span>
+      </div>
+      <div class="quick-menu-item" data-action="image">
+        <i class="fa-solid fa-image"></i>
+        <span>插入图片</span>
+      </div>
+      <div class="quick-menu-item" data-action="link">
+        <i class="fa-solid fa-link"></i>
+        <span>插入链接</span>
+      </div>
+    </div>
+
+    <!-- 发布确认弹窗 -->
+    <div
+      id="publish-modal"
+      class="fixed inset-0 bg-black/50 flex items-center justify-center z-2000 hidden"
+    >
+      <div class="bg-white pixel-border rounded-lg p-8 max-w-md mx-4">
+        <h3 class="font-zh-pixel text-[#b93a6f] text-sm mb-4 text-center">
+          确认发布
+        </h3>
+        <p class="body-font text-gray-600 text-center mb-6">
+          确定要将这篇文章发布到个人博客吗？
         </p>
-        <div class="pixel-divider w-48 mx-auto mt-4"></div>
-      </div>
-
-      <!-- 工具栏 -->
-      <div class="flex flex-wrap gap-3 mb-4 justify-center">
-        <button class="pixel-btn" onclick="loadTemplate()">
-          <i data-lucide="file-text" class="w-4 h-4"></i>
-          加载模板
-        </button>
-        <button class="pixel-btn pixel-btn-secondary" onclick="clearEditor()">
-          <i data-lucide="trash-2" class="w-4 h-4"></i>
-          清空
-        </button>
-        <button class="pixel-btn pixel-btn-secondary" onclick="copyMarkdown()">
-          <i data-lucide="copy" class="w-4 h-4"></i>
-          复制 Markdown
-        </button>
-        <button class="pixel-btn" onclick="showOutput()">
-          <i data-lucide="code" class="w-4 h-4"></i>
-          导出 HTML 代码
-        </button>
-      </div>
-
-      <!-- 编辑器主体 -->
-      <div class="pixel-card editor-container">
-        <!-- 左侧编辑区 -->
-        <div class="editor-pane border-r-4 border-pink-900">
-          <div class="editor-pane-header">
-            <i data-lucide="edit-3" class="w-5 h-5"></i>
-            Markdown 编辑区
-          </div>
-          <textarea
-            id="markdownEditor"
-            class="editor-textarea"
-            placeholder="在这里输入你的 Markdown 文章..."
-          ></textarea>
+        <div class="flex justify-center gap-4">
+          <button id="cancel-publish" class="pixel-btn bg-gray-500">
+            取消
+          </button>
+          <button id="confirm-publish" class="pixel-btn">确认发布</button>
         </div>
-
-        <!-- 右侧预览区 -->
-        <div class="editor-pane">
-          <div class="editor-pane-header">
-            <i data-lucide="eye" class="w-5 h-5"></i>
-            实时预览
-          </div>
-          <div id="previewPane" class="preview-pane article-content">
-            <p class="text-pink-600 italic">开始编辑，这里会显示实时预览...</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 使用说明 -->
-      <div class="help-section">
-        <h2 class="text-xl">📖 使用说明</h2>
-        <ol>
-          <li>
-            <strong>编写文章：</strong>在左侧编辑区输入 Markdown 格式的文章内容
-          </li>
-          <li>
-            <strong>实时预览：</strong
-            >右侧会自动渲染预览效果，与博客详情页完全一致
-          </li>
-          <li>
-            <strong>加载模板：</strong>点击「加载模板」按钮可以加载常用语法示例
-          </li>
-          <li>
-            <strong>导出发布：</strong>点击「导出 HTML 代码」，复制内容，然后：
-            <ol style="margin-left: 1.5rem; margin-top: 0.5rem">
-              <li>打开 detail.html 文件</li>
-              <li>找到 articles 数组，添加新的文章对象</li>
-              <li>将复制的 content 内容粘贴进去</li>
-              <li>设置好 id、tag、date、readtime、title 等字段</li>
-              <li>更新 prev 和 next 的导航关系</li>
-            </ol>
-          </li>
-        </ol>
       </div>
     </div>
 
-    <!-- 导出模态框 -->
-    <div id="outputModal" class="output-modal hidden">
-      <div class="output-modal-content">
-        <div class="output-modal-header">
-          <h3 class="font-zhPixel text-lg text-pink-900 font-bold">
-            📋 导出的文章数据
-          </h3>
-          <button
-            onclick="hideOutput()"
-            class="text-pink-900 hover:text-pink-600"
-          >
-            <i data-lucide="x" class="w-6 h-6"></i>
-          </button>
-        </div>
-        <div class="output-modal-body">
-          <p class="text-pink-700 mb-3 text-sm">
-            复制下面的代码，粘贴到 detail.html 的 articles 数组中：
-          </p>
-          <textarea
-            id="outputTextarea"
-            class="output-textarea"
-            readonly
-          ></textarea>
-        </div>
-        <div class="output-modal-footer">
-          <button class="pixel-btn pixel-btn-secondary" onclick="hideOutput()">
-            关闭
-          </button>
-          <button class="pixel-btn" onclick="copyOutput()">
-            <i data-lucide="copy" class="w-4 h-4"></i>
-            复制代码
-          </button>
-        </div>
-      </div>
-    </div>
+    <!-- 图片上传input -->
+    <input type="file" id="image-upload" accept="image/*" class="hidden" />
 
     <script>
-      // 初始化 Lucide 图标
-      lucide.createIcons();
+      const editor = document.getElementById("editor");
+      const floatToolbar = document.getElementById("float-toolbar");
+      const quickMenu = document.getElementById("quick-menu");
+      const wordCount = document.getElementById("word-count");
+      const publishModal = document.getElementById("publish-modal");
+      const imageUpload = document.getElementById("image-upload");
 
-      // Markdown 渲染函数（与 detail.html 保持一致）
-      function renderMarkdown(text) {
-        let html = text
-          .replace(/^### (.*$)/gim, "<h3>$1</h3>")
-          .replace(/^## (.*$)/gim, "<h2>$1</h2>")
-          .replace(/^# (.*$)/gim, "<h1>$1</h1>")
-          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-          .replace(/\*(.*?)\*/g, "<em>$1</em>")
-          .replace(
-            /!\[([^\]]*)\]\(([^\)]+)\)/g,
-            '<img src="$2" alt="$1" class="max-w-full h-auto my-4 rounded shadow-lg">',
-          );
+      let history = [];
+      let historyIndex = -1;
+      let isTyping = false;
+      let typingTimeout = null;
 
-        let tempHtml = "";
-        let inCode = false;
-        let lines = html.split("\n");
-        let codeBuffer = "";
+      // 初始化历史记录
+      saveToHistory();
 
-        for (let i = 0; i < lines.length; i++) {
-          if (lines[i].startsWith("```")) {
-            if (!inCode) {
-              inCode = true;
-              codeBuffer = "";
-            } else {
-              tempHtml += "<pre><code>" + codeBuffer + "</code></pre>";
-              inCode = false;
-            }
-          } else if (inCode) {
-            codeBuffer += lines[i] + "\n";
-          } else {
-            tempHtml += lines[i] + "\n";
-          }
+      // 保存到历史记录
+      function saveToHistory() {
+        history = history.slice(0, historyIndex + 1);
+        history.push(editor.innerHTML);
+        historyIndex++;
+        if (history.length > 50) {
+          history.shift();
+          historyIndex--;
         }
-
-        html = tempHtml;
-        html = html.replace(/^> (.*$)/gim, "<blockquote>$1</blockquote>");
-
-        let finalHtml = "";
-        lines = html.split("\n");
-
-        for (let i = 0; i < lines.length; i++) {
-          let line = lines[i];
-
-          if (!line || !line.trim()) {
-            finalHtml += "<br>";
-            continue;
-          }
-
-          if (
-            line.startsWith("<h") ||
-            line.startsWith("<pre") ||
-            line.startsWith("</") ||
-            line.startsWith("<blockquote") ||
-            line.startsWith("<img")
-          ) {
-            finalHtml += line;
-            continue;
-          }
-
-          let orderedMatch = line.trim().match(/^(\d+)\. (.*)/);
-          if (orderedMatch) {
-            let num = orderedMatch[1];
-            let content = orderedMatch[2];
-            finalHtml += `<div class="mb-2"><span class="font-bold mr-2 text-pink-700">${num}.</span><span>${content}</span></div>`;
-            continue;
-          }
-
-          if (
-            line.startsWith("   Idea") ||
-            line.startsWith("    Idea") ||
-            line.startsWith("   Q:") ||
-            line.startsWith("    Q:")
-          ) {
-            let indent = line.startsWith("    ") ? 4 : 3;
-            let content = line.substring(indent);
-            finalHtml += `<div class="ml-8 text-pink-800 italic mb-1">${content}</div>`;
-            continue;
-          }
-
-          if (line.startsWith("   ") || line.startsWith("    ")) {
-            let indent = line.startsWith("    ") ? 4 : 3;
-            let content = line.substring(indent);
-            finalHtml += `<div class="ml-8 text-pink-800 mb-1">${content}</div>`;
-            continue;
-          }
-
-          finalHtml += `<p>${line}</p>`;
-        }
-
-        return finalHtml;
       }
 
-      // 模板内容
-      const templateContent = `# 文章标题
+      // 撤销
+      function undo() {
+        if (historyIndex > 0) {
+          historyIndex--;
+          editor.innerHTML = history[historyIndex];
+          updateWordCount();
+        }
+      }
 
-## 二级标题
+      // 重做
+      function redo() {
+        if (historyIndex < history.length - 1) {
+          historyIndex++;
+          editor.innerHTML = history[historyIndex];
+          updateWordCount();
+        }
+      }
 
-这是一段普通的**加粗文本**，这是一段*斜体文本*。
+      // 更新字数统计
+      function updateWordCount() {
+        const text = editor.innerText || "";
+        const count = text.replace(/\s/g, "").length;
+        wordCount.textContent = `字数：${count}`;
+      }
 
-### 三级标题
+      // 显示浮动工具栏
+      function showFloatToolbar() {
+        const selection = window.getSelection();
+        if (selection.toString().trim()) {
+          const range = selection.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+          floatToolbar.style.left = `${Math.min(rect.left + rect.width / 2 - floatToolbar.offsetWidth / 2, window.innerWidth - floatToolbar.offsetWidth - 20)}px`;
+          floatToolbar.style.top = `${rect.top - floatToolbar.offsetHeight - 10}px`;
+          floatToolbar.classList.remove("hidden");
+        } else {
+          floatToolbar.classList.add("hidden");
+        }
+      }
 
-1. 这是第一条有序列表项
-   Idea: 这是缩进的 Idea 内容
-2. 这是第二条有序列表项
-   Q: 这是一个问题？
-3. 这是第三条有序列表项
+      // 隐藏浮动工具栏
+      function hideFloatToolbar() {
+        if (!floatToolbar.matches(":hover")) {
+          floatToolbar.classList.add("hidden");
+        }
+      }
 
-> 这是一段引用文字，用来突出显示重要内容。
+      // 显示快捷菜单
+      function showQuickMenu() {
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+          quickMenu.style.left = `${rect.left}px`;
+          quickMenu.style.top = `${rect.bottom + 10}px`;
+          quickMenu.classList.remove("hidden");
+        }
+      }
 
-### 代码示例
+      // 格式化文本
+      function formatText(action) {
+        editor.focus();
 
-\`\`\`javascript
-function hello() {
-  console.log("Hello, World!");
-}
-\`\`\`
+        switch (action) {
+          case "bold":
+            document.execCommand("bold", false);
+            break;
+          case "italic":
+            document.execCommand("italic", false);
+            break;
+          case "underline":
+            document.execCommand("underline", false);
+            break;
+          case "strike":
+            document.execCommand("strikeThrough", false);
+            break;
+          case "h1":
+          case "h2":
+          case "h3":
+          case "h4":
+          case "h5":
+          case "h6":
+            document.execCommand("formatBlock", false, `<${action}>`);
+            break;
+          case "list-ul":
+            document.execCommand("insertUnorderedList", false);
+            break;
+          case "list-ol":
+            document.execCommand("insertOrderedList", false);
+            break;
+          case "quote":
+            document.execCommand("formatBlock", false, "<blockquote>");
+            break;
+          case "code":
+            insertCodeBlock();
+            break;
+          case "hr":
+            document.execCommand("insertHTML", false, "<hr>");
+            break;
+          case "link":
+            insertLink();
+            break;
+          case "image":
+            imageUpload.click();
+            break;
+          case "highlight":
+            insertHighlight();
+            break;
+          case "clear":
+            document.execCommand("removeFormat", false);
+            break;
+          case "undo":
+            undo();
+            return;
+          case "redo":
+            redo();
+            return;
+        }
 
-### 图片示例
+        saveToHistory();
+        updateWordCount();
+        floatToolbar.classList.add("hidden");
+      }
 
-![图片描述](image.png)
+      // 插入代码块
+      function insertCodeBlock() {
+        const selection = window.getSelection();
+        const selectedText = selection.toString();
+        const pre = document.createElement("pre");
+        const code = document.createElement("code");
+        code.textContent = selectedText || "// 在这里输入代码";
+        pre.appendChild(code);
 
-### 段落内容
+        if (selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+          range.deleteContents();
+          range.insertNode(pre);
+          const newRange = document.createRange();
+          newRange.setStartAfter(pre);
+          newRange.collapse(true);
+          selection.removeAllRanges();
+          selection.addRange(newRange);
+        }
+      }
 
-这是一个普通的段落。你可以在这里写任何想要的内容，包括**加粗**和*斜体*等格式。
+      // 插入链接
+      function insertLink() {
+        const url = prompt("请输入链接地址：", "https://");
+        if (url) {
+          const selection = window.getSelection();
+          const text = selection.toString() || "链接";
+          document.execCommand("createLink", false, url);
+          const range = selection.getRangeAt(0);
+          const link = range.commonAncestorContainer.closest("a");
+          if (link && link.textContent !== text) {
+            link.textContent = text;
+          }
+        }
+      }
 
-- 无序列表项一
-- 无序列表项二
-- 无序列表项三
+      // 插入高亮
+      function insertHighlight() {
+        const selection = window.getSelection();
+        const selectedText = selection.toString();
+        if (selectedText) {
+          const mark = document.createElement("mark");
+          mark.textContent = selectedText;
+          const range = selection.getRangeAt(0);
+          range.deleteContents();
+          range.insertNode(mark);
+        }
+      }
 
-感谢阅读！`;
+      // 处理Markdown实时预览
+      function handleMarkdownPreview() {
+        const selection = window.getSelection();
+        if (selection.rangeCount === 0) return;
 
-      // 获取编辑区元素
-      const editor = document.getElementById("markdownEditor");
-      const previewPane = document.getElementById("previewPane");
+        const range = selection.getRangeAt(0);
+        const container = range.commonAncestorContainer;
+        const textNode =
+          container.nodeType === Node.TEXT_NODE
+            ? container
+            : container.firstChild;
 
-      // 实时预览
-      editor.addEventListener("input", function () {
-        const markdown = editor.value;
-        previewPane.innerHTML = renderMarkdown(markdown);
+        if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return;
+
+        const text = textNode.textContent;
+        const offset = range.startOffset;
+
+        // 检查行首的Markdown语法
+        const lineStart = text.lastIndexOf("\n", offset - 1) + 1;
+        const lineText = text.substring(lineStart, offset);
+
+        // 处理标题语法
+        const headingMatch = lineText.match(/^(#+)\s*$/);
+        if (headingMatch) {
+          const level = headingMatch[1].length;
+          if (level >= 1 && level <= 6) {
+            const newRange = document.createRange();
+            newRange.selectNode(textNode);
+            newRange.setStart(textNode, lineStart);
+            newRange.setEnd(textNode, lineStart + headingMatch[1].length);
+            newRange.deleteContents();
+            document.execCommand("formatBlock", false, `<h${level}>`);
+            saveToHistory();
+          }
+        }
+
+        // 处理无序列表
+        if (lineText === "- ") {
+          const newRange = document.createRange();
+          newRange.selectNode(textNode);
+          newRange.setStart(textNode, lineStart);
+          newRange.setEnd(textNode, lineStart + 2);
+          newRange.deleteContents();
+          document.execCommand("insertUnorderedList", false);
+          saveToHistory();
+        }
+
+        // 处理有序列表
+        const olMatch = lineText.match(/^\d+\.\s$/);
+        if (olMatch) {
+          const newRange = document.createRange();
+          newRange.selectNode(textNode);
+          newRange.setStart(textNode, lineStart);
+          newRange.setEnd(textNode, lineStart + olMatch[0].length);
+          newRange.deleteContents();
+          document.execCommand("insertOrderedList", false);
+          saveToHistory();
+        }
+
+        // 处理引用
+        if (lineText === "> ") {
+          const newRange = document.createRange();
+          newRange.selectNode(textNode);
+          newRange.setStart(textNode, lineStart);
+          newRange.setEnd(textNode, lineStart + 2);
+          newRange.deleteContents();
+          document.execCommand("formatBlock", false, "<blockquote>");
+          saveToHistory();
+        }
+
+        // 处理粗体
+        const boldMatch = text.substring(Math.max(0, offset - 4), offset);
+        if (boldMatch === "**" && offset >= 4) {
+          const prevText = text.substring(offset - 4, offset - 2);
+          const span = document.createElement("strong");
+          span.textContent = prevText;
+          const newRange = document.createRange();
+          newRange.selectNode(textNode);
+          newRange.setStart(textNode, offset - 4);
+          newRange.setEnd(textNode, offset);
+          newRange.deleteContents();
+          newRange.insertNode(span);
+          saveToHistory();
+        }
+
+        // 处理斜体
+        const italicMatch = text.substring(Math.max(0, offset - 2), offset);
+        if (italicMatch === "*" && offset >= 2 && text[offset - 3] !== "*") {
+          const prevChar = text[offset - 2];
+          const em = document.createElement("em");
+          em.textContent = prevChar;
+          const newRange = document.createRange();
+          newRange.selectNode(textNode);
+          newRange.setStart(textNode, offset - 2);
+          newRange.setEnd(textNode, offset);
+          newRange.deleteContents();
+          newRange.insertNode(em);
+          saveToHistory();
+        }
+
+        // 处理高亮
+        const highlightMatch = text.substring(Math.max(0, offset - 4), offset);
+        if (highlightMatch === "==" && offset >= 4) {
+          const prevText = text.substring(offset - 4, offset - 2);
+          const mark = document.createElement("mark");
+          mark.textContent = prevText;
+          const newRange = document.createRange();
+          newRange.selectNode(textNode);
+          newRange.setStart(textNode, offset - 4);
+          newRange.setEnd(textNode, offset);
+          newRange.deleteContents();
+          newRange.insertNode(mark);
+          saveToHistory();
+        }
+      }
+
+      // 输入事件处理
+      editor.addEventListener("input", () => {
+        updateWordCount();
+
+        // 延迟保存历史记录，避免频繁保存
+        if (typingTimeout) clearTimeout(typingTimeout);
+        typingTimeout = setTimeout(() => {
+          saveToHistory();
+        }, 500);
       });
 
-      // 加载模板
-      function loadTemplate() {
-        editor.value = templateContent;
-        previewPane.innerHTML = renderMarkdown(templateContent);
-      }
-
-      // 清空编辑器
-      function clearEditor() {
-        if (confirm("确定要清空编辑器吗？")) {
-          editor.value = "";
-          previewPane.innerHTML =
-            '<p class="text-pink-600 italic">开始编辑，这里会显示实时预览...</p>';
-        }
-      }
-
-      // 复制 Markdown
-      function copyMarkdown() {
-        navigator.clipboard.writeText(editor.value).then(() => {
-          alert("Markdown 已复制到剪贴板！");
-        });
-      }
-
-      // 显示导出模态框
-      function showOutput() {
-        const markdown = editor.value;
-        const escapedContent = markdown
-          .replace(/\\/g, "\\\\")
-          .replace(/`/g, "\\`")
-          .replace(/\$/g, "\\$");
-
-        const output = `{
-  id: [新文章ID],
-  tag: "[分类标签]",
-  date: "2026-05-07",
-  readtime: "[阅读时长]",
-  title: "[文章标题]",
-  content: \`${escapedContent}\`,
-  prev: [上一篇文章ID],
-  next: [下一篇文章ID],
-},`;
-
-        document.getElementById("outputTextarea").value = output;
-        document.getElementById("outputModal").classList.remove("hidden");
-      }
-
-      // 隐藏导出模态框
-      function hideOutput() {
-        document.getElementById("outputModal").classList.add("hidden");
-      }
-
-      // 复制输出内容
-      function copyOutput() {
-        const textarea = document.getElementById("outputTextarea");
-        navigator.clipboard.writeText(textarea.value).then(() => {
-          alert("代码已复制到剪贴板！现在可以粘贴到 detail.html 中了！");
-        });
-      }
-
-      // 点击模态框外部关闭
-      document
-        .getElementById("outputModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) {
-            hideOutput();
+      // 按键事件处理
+      editor.addEventListener("keydown", (e) => {
+        // 快捷键处理
+        if (e.ctrlKey || e.metaKey) {
+          switch (e.key.toLowerCase()) {
+            case "z":
+              e.preventDefault();
+              if (e.shiftKey) redo();
+              else undo();
+              break;
+            case "b":
+              e.preventDefault();
+              formatText("bold");
+              break;
+            case "i":
+              e.preventDefault();
+              formatText("italic");
+              break;
+            case "u":
+              e.preventDefault();
+              formatText("underline");
+              break;
+            case "y":
+              e.preventDefault();
+              redo();
+              break;
           }
+          return;
+        }
+
+        // 斜杠快捷菜单
+        if (e.key === "/") {
+          const selection = window.getSelection();
+          if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const container = range.commonAncestorContainer;
+            const text = container.textContent || "";
+            const offset = range.startOffset;
+            const lineStart = text.lastIndexOf("\n", offset - 1) + 1;
+            if (lineStart === offset) {
+              e.preventDefault();
+              showQuickMenu();
+            }
+          }
+        }
+
+        // Enter键处理（完成Markdown语法）
+        if (e.key === "Enter") {
+          handleMarkdownPreview();
+        }
+      });
+
+      // 鼠标事件处理
+      editor.addEventListener("mouseup", showFloatToolbar);
+      document.addEventListener("click", (e) => {
+        if (
+          !floatToolbar.contains(e.target) &&
+          !floatToolbar.matches(":hover")
+        ) {
+          floatToolbar.classList.add("hidden");
+        }
+        if (!quickMenu.contains(e.target)) {
+          quickMenu.classList.add("hidden");
+        }
+      });
+
+      // 工具栏点击
+      floatToolbar.addEventListener("click", (e) => {
+        const btn = e.target.closest(".toolbar-btn");
+        if (btn) {
+          formatText(btn.dataset.action);
+        }
+      });
+
+      // 快捷菜单点击
+      quickMenu.addEventListener("click", (e) => {
+        const item = e.target.closest(".quick-menu-item");
+        if (item) {
+          formatText(item.dataset.action);
+          quickMenu.classList.add("hidden");
+        }
+      });
+
+      // 图片上传
+      imageUpload.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            document.execCommand("insertImage", false, event.target.result);
+            saveToHistory();
+          };
+          reader.readAsDataURL(file);
+        }
+        imageUpload.value = "";
+      });
+
+      // 发布功能
+      document.getElementById("publish-btn").addEventListener("click", () => {
+        publishModal.classList.remove("hidden");
+      });
+
+      document
+        .getElementById("cancel-publish")
+        .addEventListener("click", () => {
+          publishModal.classList.add("hidden");
         });
 
-      // 初始化时加载模板
-      loadTemplate();
+      document
+        .getElementById("confirm-publish")
+        .addEventListener("click", () => {
+          const content = editor.innerHTML;
+          console.log("发布内容:", content);
+          publishModal.classList.add("hidden");
+          alert("🎉 发布成功！文章已更新至博客");
+        });
+
+      // 拖拽排序
+      editor.addEventListener("dragstart", (e) => {
+        const element = e.target.closest(
+          "p, h1, h2, h3, h4, h5, h6, blockquote, pre, ul, ol",
+        );
+        if (element) {
+          element.classList.add("opacity-50");
+          e.dataTransfer.effectAllowed = "move";
+        }
+      });
+
+      editor.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      editor.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const draggedElement = document.querySelector(".opacity-50");
+        const dropTarget = e.target.closest(
+          "p, h1, h2, h3, h4, h5, h6, blockquote, pre, ul, ol",
+        );
+
+        if (draggedElement && dropTarget && draggedElement !== dropTarget) {
+          dropTarget.parentNode.insertBefore(draggedElement, dropTarget);
+        }
+        document
+          .querySelectorAll(".opacity-50")
+          .forEach((el) => el.classList.remove("opacity-50"));
+        saveToHistory();
+      });
+
+      editor.addEventListener("dragend", () => {
+        document
+          .querySelectorAll(".opacity-50")
+          .forEach((el) => el.classList.remove("opacity-50"));
+      });
+
+      // 设置可拖拽
+      editor.addEventListener("mousedown", (e) => {
+        const element = e.target.closest(
+          "p, h1, h2, h3, h4, h5, h6, blockquote, pre, ul, ol",
+        );
+        if (element) {
+          element.setAttribute("draggable", "true");
+        }
+      });
     </script>
   </body>
 </html>
